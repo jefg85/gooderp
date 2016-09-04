@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Ventas Agrupador Clientes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Descripcion</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ventas_agrupador_clientes.each do |ventas_agrupador_cliente| %>
+      <tr>
+        <td><%= ventas_agrupador_cliente.nombre %></td>
+        <td><%= ventas_agrupador_cliente.descripcion %></td>
+        <td><%= link_to 'Show', ventas_agrupador_cliente %></td>
+        <td><%= link_to 'Edit', edit_ventas_agrupador_cliente_path(ventas_agrupador_cliente) %></td>
+        <td><%= link_to 'Destroy', ventas_agrupador_cliente, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Agrupador cliente', new_ventas_agrupador_cliente_path %>

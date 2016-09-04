@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Producto:</strong>
+  <%= @inventario_producto_detalle.producto_id %>
+</p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @inventario_producto_detalle.nombre %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @inventario_producto_detalle.descripcion %>
+</p>
+
+<%= link_to 'Edit', edit_inventario_producto_detalle_path(@inventario_producto_detalle) %> |
+<%= link_to 'Back', inventario_producto_detalles_path %>

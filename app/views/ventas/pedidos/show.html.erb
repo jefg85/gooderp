@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Fecha:</strong>
+  <%= @ventas_pedido.fecha %>
+</p>
+
+<p>
+  <strong>Cliente:</strong>
+  <%= @ventas_pedido.cliente_id %>
+</p>
+
+<%= link_to 'Edit', edit_ventas_pedido_path(@ventas_pedido) %> |
+<%= link_to 'Back', ventas_pedidos_path %>

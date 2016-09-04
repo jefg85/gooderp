@@ -1,0 +1,2 @@
+module Ventas::AgrupadorClientesHelper
+end

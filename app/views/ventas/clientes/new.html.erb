@@ -1,0 +1,41 @@
+<!-- page content -->
+<%= form_for @ventas_cliente, html: {class: 'form-horizontal form-label-left'} do |f| %>
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Nuevo Cliente</h3>
+      </div>  
+      <div class="title_right">
+      <div class="col-md-2 col-sm-2 col-xs-5 form-group pull-right">
+          <%= link_to 'Cancelar', ventas_clientes_path, {class: 'btn btn-primary'} %>
+          </div>  
+        <div class="col-md-2 col-sm-2 col-xs-5 form-group pull-right">
+          <%= f.submit 'Guadar', {class: 'btn btn btn-success'} %>
+          </div>               
+      </div>     
+    </div>
+    <div class="clearfix"></div>
+
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+
+      <div class="x_title">
+
+        <div class="clearfix"></div>
+      </div>
+
+      <div class="x_content" style="display: block;">
+           <%= render :partial => "form", :locals => {:f => f} %> 
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+<% end %>
+<!-- /page content -->
+

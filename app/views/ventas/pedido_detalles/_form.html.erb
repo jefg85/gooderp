@@ -1,0 +1,33 @@
+<%= form_for(@ventas_pedido_detalle) do |f| %>
+  <% if @ventas_pedido_detalle.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@ventas_pedido_detalle.errors.count, "error") %> prohibited this ventas_pedido_detalle from being saved:</h2>
+
+      <ul>
+      <% @ventas_pedido_detalle.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :pedido_id %><br>
+    <%= f.number_field :pedido_id %>
+  </div>
+  <div class="field">
+    <%= f.label :producto_id %><br>
+    <%= f.number_field :producto_id %>
+  </div>
+  <div class="field">
+    <%= f.label :cantidad %><br>
+    <%= f.number_field :cantidad %>
+  </div>
+  <div class="field">
+    <%= f.label :precio %><br>
+    <%= f.text_field :precio %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

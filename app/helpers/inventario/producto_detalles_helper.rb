@@ -1,0 +1,2 @@
+module Inventario::ProductoDetallesHelper
+end

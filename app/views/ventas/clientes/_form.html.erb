@@ -1,104 +1,101 @@
 
-  <% if @ventas_cliente.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@ventas_cliente.errors.count, "error") %> prohibited this ventas_cliente from being saved:</h2>
-
-      <ul>
-      <% @ventas_cliente.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+<% if @ventas_cliente.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(@ventas_cliente.errors.count, "error") %> prohibited this ventas_cliente from being saved:</h2>
+  <ul>
+    <% @ventas_cliente.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
 
 <div class="form-group">
-     <label for="ventas_cliente_agrupador_cliente_id" class="control-label col-md-3 col-sm-3 col-xs-12">
-    Agrupador
-    <span class="required">*</span>
-    </label>
-    <div class="col-md-6 col-sm-6 col-xs-12">
-    <%= f.collection_select(:agrupador_cliente_id, @agrupador, :id, :nombre, {include_blank: true}, {class: 'form-control col-md-7 col-xs-12', required: 'required'}) %>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="ventas_cliente_primer_nombre" class="control-label col-md-3 col-sm-3 col-xs-12">
+ <label for="ventas_cliente_agrupador_cliente_id" class="control-label col-md-3 col-sm-3 col-xs-12">
+  Agrupador
+  <span class="required">*</span>
+</label>
+<div class="col-md-6 col-sm-6 col-xs-12">
+  <%= f.collection_select(:agrupador_cliente_id, @agrupador, :id, :nombre, {include_blank: true}, {class: 'form-control col-md-7 col-xs-12', required: 'required'}) %>
+</div>
+</div>
+<div class="form-group">
+  <label for="ventas_cliente_primer_nombre" class="control-label col-md-3 col-sm-3 col-xs-12">
     Primer Nombre
     <span class="required">*</span>
-    </label>
-    <div class="col-md-6 col-sm-6 col-xs-12">
+  </label>
+  <div class="col-md-6 col-sm-6 col-xs-12">
     <%= f.text_field :primer_nombre, {class: 'form-control col-md-7 col-xs-12 has-feedback-left', required: 'required'} %>
     <span aria-hidden="true" class="fa fa-user form-control-feedback left"></span>
-    </div>
   </div>
-  <div class="form-group">
-    <%= f.label :segundo_nombre, 'Segundo Nombre', {class: 'control-label col-md-3 col-sm-3 col-xs-12'} %>
-    <div class="col-md-6 col-sm-6 col-xs-12">
+</div>
+<div class="form-group">
+  <%= f.label :segundo_nombre, 'Segundo Nombre', {class: 'control-label col-md-3 col-sm-3 col-xs-12'} %>
+  <div class="col-md-6 col-sm-6 col-xs-12">
     <%= f.text_field :segundo_nombre, {class: 'form-control col-md-7 col-xs-12 has-feedback-left'} %>
     <span aria-hidden="true" class="fa fa-user form-control-feedback left"></span>
-    </div>
   </div>
-  <div class="form-group">
-    <label for="ventas_cliente_primer_apellido" class="control-label col-md-3 col-sm-3 col-xs-12">
+</div>
+<div class="form-group">
+  <label for="ventas_cliente_primer_apellido" class="control-label col-md-3 col-sm-3 col-xs-12">
     Primer Apellido
     <span class="required">*</span>
-    </label>
-    <div class="col-md-6 col-sm-6 col-xs-12">
+  </label>
+  <div class="col-md-6 col-sm-6 col-xs-12">
     <%= f.text_field :primer_apellido, {class: 'form-control col-md-7 col-xs-12 has-feedback-left', required: 'required'} %>
     <span aria-hidden="true" class="fa fa-user form-control-feedback left"></span>
-    </div>
   </div>
-  <div class="form-group">
-    <%= f.label :segundo_apellido, 'Segundo Apellido', {class: 'control-label col-md-3 col-sm-3 col-xs-12'} %>
-    <div class="col-md-6 col-sm-6 col-xs-12">
+</div>
+<div class="form-group">
+  <%= f.label :segundo_apellido, 'Segundo Apellido', {class: 'control-label col-md-3 col-sm-3 col-xs-12'} %>
+  <div class="col-md-6 col-sm-6 col-xs-12">
     <%= f.text_field :segundo_apellido, {class: 'form-control col-md-7 col-xs-12 has-feedback-left'} %>
     <span aria-hidden="true" class="fa fa-user form-control-feedback left"></span>  
-    </div>
   </div>
-  <div class="form-group">
-     <label for="ventas_cliente_sexo" class="control-label col-md-3 col-sm-3 col-xs-12">
-    Sexo
-    <span class="required">*</span>
-    </label>
-    <div class="col-md-6 col-sm-6 col-xs-12">
-    <%= f.select(:sexo, [['MASCULINO','M'], ['FEMENINO','F']], {include_blank: true}, {class: 'form-control col-md-7 col-xs-12', required: 'required'}) %>
-    </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :cedula, 'Cédula', {class: 'control-label col-md-3 col-sm-3 col-xs-12'} %>
-    <div class="col-md-6 col-sm-6 col-xs-12">
+</div>
+<div class="form-group">
+ <label for="ventas_cliente_sexo" class="control-label col-md-3 col-sm-3 col-xs-12">
+  Sexo
+  <span class="required">*</span>
+</label>
+<div class="col-md-6 col-sm-6 col-xs-12">
+  <%= f.select(:sexo, [['MASCULINO','M'], ['FEMENINO','F']], {include_blank: true}, {class: 'form-control col-md-7 col-xs-12', required: 'required'}) %>
+</div>
+</div>
+<div class="form-group">
+  <%= f.label :cedula, 'Cédula', {class: 'control-label col-md-3 col-sm-3 col-xs-12'} %>
+  <div class="col-md-6 col-sm-6 col-xs-12">
     <%= f.text_field :cedula, {class: 'form-control col-md-7 col-xs-12 has-feedback-left'} %>
     <span aria-hidden="true" class="fa fa-credit-card form-control-feedback left"></span> 
-    </div>
   </div>
-  <div class="form-group">    
-     <label for="ventas_cliente_fecha_nacimiento" class="control-label col-md-3 col-sm-3 col-xs-12">
-    Fecha Nacimiento
-    <span class="required">*</span>
-    </label>
-    <div class="col-md-6 col-sm-6 col-xs-12">
-    <%= f.text_field :fecha_nacimiento, {class: 'date-picker form-control col-md-7 col-xs-12 has-feedback-left', required: 'required'} %>
-    <span aria-hidden="true" class="fa fa-calendar form-control-feedback left"></span> 
-    </div>
-  </div>
-  <div class="form-group">    
-     <label for="ventas_cliente_email" class="control-label col-md-3 col-sm-3 col-xs-12">
-    Email
-    <span class="required">*</span>
-    </label>
-    <div class="col-md-6 col-sm-6 col-xs-12">
-    <%= f.text_field :email, {class: 'form-control col-md-7 col-xs-12 has-feedback-left', placeholder: 'Email', required: 'required'} %>
-    <span aria-hidden="true" class="fa fa-envelope form-control-feedback left"></span>
-    </div>
-  </div>
-  <div class="ln_solid"></div>
-   <!-- bootstrap-daterangepicker -->
-    <script>
-      $(document).ready(function() {
-        $('#ventas_cliente_fecha_nacimiento').daterangepicker({
-          singleDatePicker: true,
-          calender_style: "picker_4"
-        });
-      });
-    </script>
-    <!-- /bootstrap-daterangepicker -->
-
+</div>
+<div class="form-group">    
+ <label for="ventas_cliente_fecha_nacimiento" class="control-label col-md-3 col-sm-3 col-xs-12">
+  Fecha Nacimiento
+</label>
+<div class="col-md-6 col-sm-6 col-xs-12">
+  <%= f.text_field :fecha_nacimiento, {class: 'date-picker form-control col-md-7 col-xs-12 has-feedback-left'} %>
+  <span aria-hidden="true" class="fa fa-calendar form-control-feedback left"></span> 
+</div>
+</div>
+<div class="form-group">    
+ <label for="ventas_cliente_email" class="control-label col-md-3 col-sm-3 col-xs-12">
+  Email
+  <span class="required">*</span>
+</label>
+<div class="col-md-6 col-sm-6 col-xs-12">
+  <%= f.text_field :email, {class: 'form-control col-md-7 col-xs-12 has-feedback-left', placeholder: 'Email', required: 'required'} %>
+  <span aria-hidden="true" class="fa fa-envelope form-control-feedback left"></span>
+</div>
+</div>
+<div class="ln_solid"></div>
+<!-- bootstrap-daterangepicker -->
+<script>
+  $(document).ready(function() {
+    $('#ventas_cliente_fecha_nacimiento').daterangepicker({
+      singleDatePicker: true,
+      calender_style: "picker_4"
+    });
+  });
+</script>
+<!-- /bootstrap-daterangepicker -->

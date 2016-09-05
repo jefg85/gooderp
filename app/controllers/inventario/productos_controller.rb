@@ -4,7 +4,7 @@ class Inventario::ProductosController < ApplicationController
   # GET /inventario/productos
   # GET /inventario/productos.json
   def index
-    @inventario_productos = Inventario::Producto.all
+    @inventario_productos = Inventario::Producto.select('*').order('nombre')
   end
 
   # GET /inventario/productos/1

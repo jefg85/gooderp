@@ -1,25 +1,37 @@
-<%= form_for(@inventario_producto) do |f| %>
-  <% if @inventario_producto.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@inventario_producto.errors.count, "error") %> prohibited this inventario_producto from being saved:</h2>
-
-      <ul>
-      <% @inventario_producto.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :nombre %><br>
-    <%= f.text_field :nombre %>
-  </div>
-  <div class="field">
-    <%= f.label :descripcion %><br>
-    <%= f.text_field :descripcion %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+<% if @inventario_producto.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(@inventario_producto.errors.count, "error") %> prohibited this inventario_producto from being saved:</h2>
+  <ul>
+    <% @inventario_producto.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
 <% end %>
+
+<div class="form-group">
+  <label for="inventario_producto_primer_nombre" class="control-label col-md-3 col-sm-3 col-xs-12">
+    Nombre
+    <span class="required">*</span>
+  </label>
+  <div class="col-md-6 col-sm-6 col-xs-12">
+    <%= f.text_field :nombre, {class: 'form-control col-md-7 col-xs-12', required: 'required'} %>
+  </div>
+</div>
+<div class="form-group">
+<%= f.label :descripcion, 'Descripción', {class: 'control-label col-md-3 col-sm-3 col-xs-12'} %>
+  <div class="col-md-6 col-sm-6 col-xs-12">
+    <%= f.text_area :descripcion, {class: 'form-control col-md-7 col-xs-12'} %>
+  </div>
+</div>
+<div class="form-group">
+  <label for="inventario_producto_primer_apellido" class="control-label col-md-3 col-sm-3 col-xs-12">
+    Precio
+    <span class="required">*</span>
+  </label>
+  <div class="col-md-6 col-sm-6 col-xs-12">
+    <%= f.text_field :precio, {class: 'form-control col-md-7 col-xs-12 has-feedback-left', required: 'required'} %>
+    <span aria-hidden="true" class="fa fa-money form-control-feedback left"></span>
+  </div>
+</div>
+<div class="ln_solid"></div>

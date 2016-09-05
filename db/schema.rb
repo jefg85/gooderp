@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20160903235119) do
   create_table "inventario_productos", force: :cascade do |t|
     t.string   "nombre"
     t.string   "descripcion"
+    t.float    "precio"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end

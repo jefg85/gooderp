@@ -1,6 +1,33 @@
-<h1>Editing Ventas Cliente</h1>
+<!-- page content -->
+<%= form_for @ventas_cliente, html: {class: 'form-horizontal form-label-left'} do |f| %>
+<div class="right_col" role="main">
+	<div class="">
+		<div class="page-title">
+			<div class="title_left">
+				<h3>Editar Cliente ID: <%= @ventas_cliente.id %></h3>
+			</div>  
+			<div class="title_right">
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="x_panel">
+					<div class="x_title">
+						<div class="form-group pull-right">
+							<%= f.submit 'Guadar', {class: 'btn btn btn-success'} %>
+							<%= link_to 'Cancelar', ventas_clientes_path, {class: 'btn btn-primary'} %>
+						</div>    
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content" style="display: block;">
+						<%= render :partial => "form", :locals => {:f => f} %> 
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<% end %>
+<!-- /page content -->
 
-<%= render 'form' %>
-
-<%= link_to 'Show', @ventas_cliente %> |
-<%= link_to 'Back', ventas_clientes_path %>

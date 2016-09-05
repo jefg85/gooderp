@@ -1,3 +1,4 @@
+//= require js/datatables/dataTables.spanish.js
 //= require js/datatables/jquery.dataTables.min.js
 //= require js/datatables/dataTables.bootstrap.js
 //= require js/datatables/dataTables.buttons.min.js
@@ -12,4 +13,3 @@
 //= require js/datatables/jszip.min.js
 //= require js/datatables/pdfmake.min.js
 //= require js/datatables/vfs_fonts.js
-//= require js/datatables/dataTables.spanish.js

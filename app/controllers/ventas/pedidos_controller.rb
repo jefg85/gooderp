@@ -4,7 +4,7 @@ class Ventas::PedidosController < ApplicationController
   # GET /ventas/pedidos
   # GET /ventas/pedidos.json
   def index
-    @ventas_pedidos = Ventas::Pedido.all
+    @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente})
   end
 
   # GET /ventas/pedidos/1

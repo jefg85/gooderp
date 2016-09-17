@@ -1,4 +1,4 @@
-class Ventas::ClientesController < ApplicationController
+class Ventas::ClientesController < PrivateController
   before_action :set_ventas_cliente, only: [:show, :edit, :update, :destroy]
   before_action :set_ventas_cliente_catalogos, only: [:new, :create, :edit, :update, :destroy]
 

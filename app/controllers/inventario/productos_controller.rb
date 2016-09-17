@@ -1,4 +1,4 @@
-class Inventario::ProductosController < ApplicationController
+class Inventario::ProductosController < PrivateController
   before_action :set_inventario_producto, only: [:show, :edit, :update, :destroy]
 
   # GET /inventario/productos

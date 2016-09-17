@@ -1,4 +1,4 @@
-class Ventas::PedidoDetallesController < ApplicationController
+class Ventas::PedidoDetallesController < PrivateController
   before_action :set_ventas_pedido_detalle, only: [:show, :edit, :update, :destroy]
 
   # GET /ventas/pedido_detalles

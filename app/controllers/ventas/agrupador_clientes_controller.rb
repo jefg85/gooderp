@@ -1,4 +1,4 @@
-class Ventas::AgrupadorClientesController < ApplicationController
+class Ventas::AgrupadorClientesController < PrivateController
   before_action :set_ventas_agrupador_cliente, only: [:show, :edit, :update, :destroy]
 
   # GET /ventas/agrupador_clientes

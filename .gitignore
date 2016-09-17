@@ -32,4 +32,4 @@ app/assets/images/.keep
 /coverage
 Gemfile.lock
 config/database.yml
-database.yml
+#database.yml

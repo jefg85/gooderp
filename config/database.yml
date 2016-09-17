@@ -1,0 +1,22 @@
+development:
+  adapter: postgresql
+  encoding: utf8
+  database: gooderp_development
+  pool: 10
+  username: postgres
+  password: postgres
+  host: localhost
+  port: 5432
+
+test:
+  adapter: postgresql
+  encoding: utf8
+  database: 
+  pool: 10
+  username: 
+  password: 
+  host: 
+  port: 5432
+
+production:
+  url: <%= ENV['DATABASE_URL'] %>

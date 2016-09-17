@@ -1,5 +1,6 @@
 class Ventas::PedidosController < PrivateController
   before_action :set_ventas_pedido, only: [:show, :edit, :update, :destroy]
+  before_action :set_ventas_pedidos_catalogos, only: [:new, :create, :edit, :update, :destroy]
 
   # GET /ventas/pedidos
   # GET /ventas/pedidos.json
@@ -70,5 +71,9 @@ class Ventas::PedidosController < PrivateController
     # Never trust parameters from the scary internet, only allow the white list through.
     def ventas_pedido_params
       params.require(:ventas_pedido).permit(:fecha, :cliente_id)
+    end
+
+    def set_ventas_pedidos_catalogos
+      @clientes = Ventas::Cliente.select("id, concat_ws(' ',email,'-',primer_apellido,segundo_apellido,primer_nombre,segundo_apellido) as nombre").order('email')
     end
 end

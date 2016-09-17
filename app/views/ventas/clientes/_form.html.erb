@@ -1,3 +1,5 @@
+<%= javascript_include_tag 'forms.controls' %>
+<%= stylesheet_link_tag    'forms.controls', media: 'all' %>
 
 <% if @ventas_cliente.errors.any? %>
 <div id="error_explanation">
@@ -96,6 +98,12 @@
       singleDatePicker: true,
       calender_style: "picker_4"
     });
+
+    $("#ventas_cliente_agrupador_cliente_id").select2({
+      placeholder: "Seleccione un agrupador",
+      allowClear: true
+    });
+
   });
 </script>
 <!-- /bootstrap-daterangepicker -->

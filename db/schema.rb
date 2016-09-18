@@ -11,10 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160916204246) do
+ActiveRecord::Schema.define(version: 20160918022232) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "facturacion_cuenta", force: :cascade do |t|
+    t.integer  "cliente_id",               null: false
+    t.date     "fecha_inicio",             null: false
+    t.date     "fecha_fin"
+    t.integer  "situacion",    default: 0, null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  create_table "facturacion_cuenta_detalles", force: :cascade do |t|
+    t.integer  "cuenta_id",  null: false
+    t.integer   "pedido_id",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "inventario_producto_detalles", force: :cascade do |t|
     t.integer  "producto_id"
@@ -79,6 +95,19 @@ ActiveRecord::Schema.define(version: 20160916204246) do
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.integer  "agrupador_cliente_id"
+  end
+
+  create_table "ventas_menu_detalles", force: :cascade do |t|
+    t.integer  "menu_id",     null: false
+    t.string   "producto_id", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "ventas_menus", force: :cascade do |t|
+    t.date     "fecha",      null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "ventas_pedido_detalles", force: :cascade do |t|

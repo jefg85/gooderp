@@ -6,7 +6,8 @@ class Ventas::PedidosController < PrivateController
   # GET /ventas/pedidos
   # GET /ventas/pedidos.json
   def index
-    @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente}).page params[:page]
+    @fecha = params[:fecha].blank? ? Date.today : params[:fecha]
+    @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente}).where('pedidos.fecha = ?', @fecha).page params[:page]
   end
 
   # GET /ventas/pedidos/1

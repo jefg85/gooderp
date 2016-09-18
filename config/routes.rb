@@ -6,10 +6,14 @@ Rails.application.routes.draw do
   root 'home#index'
 
   namespace :ventas do
-    resources :pedido_detalles
+
     resources :pedidos
+    post 'pedidos/crear_detalle'
+    post 'pedidos/borrar_detalle'
+
     resources :agrupador_clientes
     resources :clientes
+
   end
  
   namespace :inventario do

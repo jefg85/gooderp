@@ -5,7 +5,7 @@ class Ventas::ClientesController < PrivateController
   # GET /ventas/clientes
   # GET /ventas/clientes.json
   def index
-    @ventas_clientes = Ventas::Cliente.select('*').order('primer_apellido')
+    @ventas_clientes = Ventas::Cliente.select('*').order('primer_apellido').page params[:page]
   end
 
   # GET /ventas/clientes/1

@@ -44,7 +44,7 @@
                 <span class="required">*</span>
               </label>
               <div class="col-md-6 col-sm-6 col-xs-12">
-                <%= f.text_field :fecha, {value: Date.today, disabled:'disabled', class: 'form-control col-md-7 col-xs-12', required: 'required'} %>
+                  <%= f.text_field :fecha, {value: Date.today, readonly:'readonly', class: 'form-control col-md-7 col-xs-12', required: 'required'} %>
               </div>
             </div>
 
@@ -67,11 +67,17 @@
 </div>
     <script>
       $(document).ready(function() {
+
         $("#ventas_pedido_cliente_id").select2({
           placeholder: "Seleccione un cliente",
           allowClear: true
         });
-
+/*
+        $('#ventas_pedido_fecha').daterangepicker({
+          singleDatePicker: true,
+          calender_style: "picker_4"
+        });
+*/
       });
     </script>
 <% end %>

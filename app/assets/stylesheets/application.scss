@@ -10,22 +10,10 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
   ** * require fonts/css/font-awesome.min
-
  *
-
-
  */
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
-
 @import "font-awesome";
-
-@import "css/animate.min";
 @import "css/custom";
-@import "css/icheck/flat/green";
-@import "css/floatexamples";
-@import "css/normalize";
-@import "css/ion.rangeSlider";
-@import "css/ion.rangeSlider.skinFlat";
-@import "pace";

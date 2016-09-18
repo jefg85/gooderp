@@ -1,5 +1,3 @@
-<%= stylesheet_link_tag    'datatables', media: 'all' %>
-<%= javascript_include_tag 'datatables' %>
 <!-- page content -->
 <div class="right_col" role="main">
   <div class="">
@@ -45,6 +43,7 @@
                   <% end %>
                 </tbody>
               </table>
+              <%= paginate @inventario_productos %>
             </div>
           </div>
         </div>
@@ -52,37 +51,3 @@
     </div>
   </div>
   <!-- /page content -->
-  <script type="text/javascript">
-
-    $(document).ready(function() {
-      var handleDataTableButtons = function() {
-        if ($("#productos").length) {
-          $("#productos").DataTable({
-            language: dataTables_spanish,
-            dom: "Bfrtip",
-            buttons: [
-            {
-              extend: "pdfHtml5",
-              className: "btn-sm"
-            }
-            ],
-            responsive: true
-          });
-        }
-      };
-
-      TableManageButtons = function() {
-        "use strict";
-        return {
-          init: function() {
-            handleDataTableButtons();
-          }
-        };
-      }();
-
-      TableManageButtons.init();
-
-    });
-  </script>
-
-

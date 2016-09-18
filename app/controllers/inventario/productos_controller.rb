@@ -4,7 +4,7 @@ class Inventario::ProductosController < PrivateController
   # GET /inventario/productos
   # GET /inventario/productos.json
   def index
-    @inventario_productos = Inventario::Producto.select('*').order('nombre')
+    @inventario_productos = Inventario::Producto.select('*').order('nombre').page params[:page]
   end
 
   # GET /inventario/productos/1

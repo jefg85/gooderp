@@ -1,5 +1,3 @@
-<%= stylesheet_link_tag    'datatables', media: 'all' %>
-<%= javascript_include_tag 'datatables' %>
 <!-- page content -->
 <div class="right_col" role="main">
   <div class="">
@@ -48,59 +46,11 @@
                   <% end %>
                 </tbody>
               </table>
+              <%= paginate @ventas_pedidos %>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- /page content -->
-  <script type="text/javascript">
-
-    $(document).ready(function() {
-      var handleDataTableButtons = function() {
-        if ($("#pedidos").length) {
-          $("#pedidos").DataTable({
-            language: dataTables_spanish,
-            dom: "Bfrtip",
-            buttons: [
-            {
-              extend: "copy",
-              className: "btn-sm"
-            },
-            {
-              extend: "csv",
-              className: "btn-sm"
-            },
-            {
-              extend: "excel",
-              className: "btn-sm"
-            },
-            {
-              extend: "pdfHtml5",
-              className: "btn-sm"
-            },
-            {
-              extend: "print",
-              className: "btn-sm"
-            }
-            ],
-            responsive: true
-          });
-        }
-      };
-
-      TableManageButtons = function() {
-        "use strict";
-        return {
-          init: function() {
-            handleDataTableButtons();
-          }
-        };
-      }();
-
-      TableManageButtons.init();
-
-    });
-  </script>
 

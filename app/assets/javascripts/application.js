@@ -11,18 +11,11 @@
 // about supported directives.
 //
 //= require jquery
-//= require bootstrap-sprockets
-
 //= require jquery_ujs
+//= require js/bootstrap.min
+//= require bootstrap-sprockets
 //= require turbolinks
-
-//= require js/progressbar/bootstrap-progressbar.min.js
-//= require js/icheck/icheck.min.js
-//= require js/moment/moment.min.js
-//= require js/datepicker/daterangepicker.js
-//= require js/pace/pace.min.js
-//= require js/nprogress.js
-//= require flash.js
+//= require js/custom
 
 
 

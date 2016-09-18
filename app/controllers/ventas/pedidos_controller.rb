@@ -1,11 +1,12 @@
 class Ventas::PedidosController < PrivateController
   before_action :set_ventas_pedido, only: [:show, :edit, :update, :destroy]
   before_action :set_ventas_pedidos_catalogos, only: [:new, :create, :edit, :update, :destroy]
+  before_action :set_ventas_pedidos_catalogos_show_edit, only: [:show, :edit]
 
   # GET /ventas/pedidos
   # GET /ventas/pedidos.json
   def index
-    @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente})
+    @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente}).page params[:page]
   end
 
   # GET /ventas/pedidos/1
@@ -62,6 +63,25 @@ class Ventas::PedidosController < PrivateController
     end
   end
 
+  def crear_detalle
+    @ventas_pedido_detalle = Ventas::PedidoDetalle.new(ventas_pedido_detalle_params)
+
+    @producto = Inventario::Producto.find(@ventas_pedido_detalle.producto_id)
+
+    @ventas_pedido_detalle.precio = @producto.precio
+    @ventas_pedido_detalle.save
+
+    @ventas_pedido = Ventas::Pedido.find(@ventas_pedido_detalle.pedido_id)
+    redirect_to @ventas_pedido, notice: 'Detalle creado exitosamente!'
+  end
+
+  def borrar_detalle
+    @ventas_pedido_detalle = Ventas::PedidoDetalle.find(params[:id])
+    @ventas_pedido = Ventas::Pedido.find(@ventas_pedido_detalle.pedido_id)
+    @ventas_pedido_detalle.destroy
+    redirect_to @ventas_pedido, notice: 'Detalle eliminado exitosamente!'
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_ventas_pedido
@@ -75,5 +95,17 @@ class Ventas::PedidosController < PrivateController
 
     def set_ventas_pedidos_catalogos
       @clientes = Ventas::Cliente.select("id, concat_ws(' ',email,'-',primer_apellido,segundo_apellido,primer_nombre,segundo_apellido) as nombre").order('email')
+    end
+
+    def set_ventas_pedidos_catalogos_show_edit
+      @cliente = Ventas::Cliente.find(@ventas_pedido.cliente_id)
+      @detalle = Ventas::PedidoDetalle.new
+      @detalle.cantidad = 1
+      @detalle.pedido_id = @ventas_pedido.id
+      @productos = Inventario::Producto.select("id,concat_ws(' ','( ',precio,' ) - ', nombre) as nombre_producto").order('nombre')
+    end
+
+    def ventas_pedido_detalle_params
+      params.require(:ventas_pedido_detalle).permit(:pedido_id, :producto_id, :cantidad, :precio)
     end
 end

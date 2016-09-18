@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de pedidos</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="nav-md" style="background-color: #ffffff">
+<div style="width: 650px; background-color: #ffffff">
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="pull-right">
+        <%= Date.today %> <%= Time.now.hour %>:<%= Time.now.min %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <h2>GOODFOOD</h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <h5>Lista de pedidos - <%= @nombre_agrupador %></h5>
+    </div>
+  </div>
+
+  <div class="row" style="padding-top: 20px">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <table id="pedidos" class="table table-striped" style="width: 650px; font-size: 8px">
+        <thead>
+        <tr>
+          <th style="width: 250px">Cliente</th>
+          <th style="width: 200px">Pedido</th>
+          <th style="width: 50px">Precio</th>
+          <th style="width: 50px">Cantidad</th>
+          <th style="width: 50px">Subtotal</th>
+          <th style="width: 50px">Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @ventas_pedidos.each do |ventas_pedido| %>
+            <tr>
+              <td>
+                <%= ventas_pedido.primer_apellido %> <%= ventas_pedido.segundo_apellido %> <%= ventas_pedido.primer_nombre %> <%= ventas_pedido.segundo_nombre %>
+              </td>
+              <td colspan="4">
+                <table style="width: 400px">
+                  <% ventas_pedido.rel_pedido_detalle.each do |pd| %>
+                      <tr>
+                        <td style="width: 200px"><%= pd.rel_producto.nombre %></td>
+                        <td style="width: 50px"><%= pd.precio %></td>
+                        <td style="width: 50px"><%= pd.cantidad %></td>
+                        <td style="width: 50px"><%= pd.precio * pd.cantidad %></td>
+                      </tr>
+                  <% end %>
+                </table>
+              </td>
+              <td>
+              <%=
+                total = 0.0
+                ventas_pedido.rel_pedido_detalle.each do |pd|
+
+                  total = total + pd.cantidad * pd.precio
+                end
+                total
+              %>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+<script type="text/javascript" charset="utf-8">
+  (function() {
+    window.print();
+  })();
+</script>
+</body>
+</html>

@@ -1,6 +1,3 @@
-<%= javascript_include_tag 'forms.controls' %>
-<%= stylesheet_link_tag    'forms.controls', media: 'all' %>
-
 <% if @ventas_cliente.errors.any? %>
 <div id="error_explanation">
   <h2><%= pluralize(@ventas_cliente.errors.count, "error") %> prohibited this ventas_cliente from being saved:</h2>
@@ -94,12 +91,15 @@
 <!-- bootstrap-daterangepicker -->
 <script>
   $(document).ready(function() {
-    /*
+
     $('#ventas_cliente_fecha_nacimiento').daterangepicker({
       singleDatePicker: true,
-      calender_style: "picker_4"
+      calender_style: "picker_4",
+      format: 'YYYY-MM-DD',
+      showDropdowns: true
     });
-    */
+
+
     $("#ventas_cliente_agrupador_cliente_id").select2({
       placeholder: "Seleccione un agrupador",
       allowClear: true

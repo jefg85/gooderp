@@ -12,8 +12,16 @@
   ** * require fonts/css/font-awesome.min
  *
  */
-
+// Bootstrap
 @import "bootstrap-sprockets";
 @import "bootstrap";
+// Font Awesome
 @import "font-awesome";
+// Pogress
+@import "css/nprogress";
+// iCheck
+@import "css/icheck/flat/green";
+// Select2
+@import "css/select/select2.min";
+// Custom Theme Style
 @import "css/custom";

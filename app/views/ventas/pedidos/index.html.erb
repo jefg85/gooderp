@@ -13,23 +13,47 @@
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
           <div class="x_title">
+            <div class="row">
+              <div class="col-md-7 col-sm-7 col-xs-7">
+                <form id="form_buscar" action="/ventas/pedidos" class="form-horizontal form-label-left">
+                  <div class="row">
+                      <label for="fecha" class="control-label col-md-1 col-sm-1 col-xs-1">
+                        Fecha
+                      </label>
 
-            <div class="pull-left">
-              <form action="/ventas/pedidos" class="form-horizontal form-label-left">
-                <div class="form-group">
-                  <label for="fecha" class="control-label col-md-3 col-sm-3 col-xs-12">
-                    Fecha
-                    <span class="required">*</span>
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input type="text" name="fecha" id="fecha" class="form-control col-md-7 col-xs-12" value="<%=@fecha%>"/>
+                      <div class="col-md-3 col-sm-3 col-xs-3">
+                        <input type="text" readonly="readonly" name="fecha" id="fecha" class="form-control col-md-7 col-xs-12" value="<%=@fecha%>"/>
+                      </div>
+                      <div class="col-md-3 col-sm-3 col-xs-3">
+                        <%= select_tag 'agrupador', options_for_select(@agrupador_cliente.collect {|a| [ a[:nombre], a[:id] ] }),{ include_blank: true, class: 'form-control' } %>
+                      </div>
+                      <div class="col-md-3 col-sm-3 col-xs-3">
+                        <input type="submit" value="Buscar" class="btn btn-primary"/>
+                      </div>
                   </div>
+                </form>
+              </div>
+              <div class="col-md-5 col-sm-5 col-xs-5">
+                  <div class="row">
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                      <%= form_tag '/ventas/pedidos/rpt_orden_trabajo', {id: 'imprimir_orden', target:'_blank', method: 'post' } do %>
+                        <input type="hidden" name="imprimir_orden_fecha" id="imprimir_orden_fecha"/>
+                        <input type="hidden" name="imprimir_orden_agrupador" id="imprimir_orden_agrupador"/>
+                        <button id="imprimir_orden_btn" class="btn btn-info">Orden de trabajo</button>
+                      <% end %>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                      <%= form_tag '/ventas/pedidos/rpt_lista_pedidos', {id: 'imprimir_pedidos', target:'_blank', method: 'post' } do %>
+                        <input type="hidden" name="imprimir_pedidos_fecha" id="imprimir_pedidos_fecha"/>
+                        <input type="hidden" name="imprimir_pedidos_agrupador" id="imprimir_pedidos_agrupador"/>
+                        <button id="imprimir_pedidos_btn" class="btn btn-info">Imprimir Pedidos</button>
+                      <% end %>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                      <%= link_to 'Nuevo', new_ventas_pedido_path, {class: 'btn btn-success'} %>
+                    </div>
                 </div>
-              </form>
-            </div>
-
-            <div class="pull-right">
-              <%= link_to 'Nuevo', new_ventas_pedido_path, {class: 'btn btn-success'} %> 
+              </div>
             </div>
             <div class="clearfix"></div>
           </div>
@@ -37,7 +61,8 @@
             <table id="pedidos" class="table table-striped table-hover">
               <thead>
                 <tr>
-                  <th>Cliente/Pedido</th>                  
+                  <th style="width: 80%">Cliente/Pedido</th>
+                  <th style="width: 20%">Total</th>
                 </tr>
               </thead>
               <tbody>
@@ -46,17 +71,32 @@
                     <td>
                       <a href="/ventas/pedidos/<%= ventas_pedido.id %>">
                         <b>
-                        <%= ventas_pedido.grupo %> / 
+                        <%= ventas_pedido.grupo  %> /
                         <%= ventas_pedido.email %> / 
                         <%= ventas_pedido.primer_apellido %> <%= ventas_pedido.segundo_apellido %> <%= ventas_pedido.primer_nombre %> <%= ventas_pedido.segundo_nombre %>                      
                         </b>
                       </a>
-                      <ol>
+                      <table style="margin-left: 10px">
                         <% ventas_pedido.rel_pedido_detalle.each do |pd| %>
-                          <li><%= pd.rel_producto.nombre %></li>
+                          <tr>
+                            <td><%= pd.rel_producto.nombre %></td>
+                            <td style="padding-left: 10px"><%= pd.precio %></td>
+                            <td style="padding-left: 10px"><%= pd.cantidad %></td>
+                            <td style="padding-left: 10px"><%= pd.precio * pd.cantidad %></td>
+                          </tr>
                         <% end %>
-                      </ol>
+                      </table>
                     </td>
+                  <td>
+                    <%=
+                      total = 0.0
+                      ventas_pedido.rel_pedido_detalle.each do |pd|
+
+                        total = total + pd.cantidad * pd.precio
+                      end
+                      total
+                    %>
+                  </td>
                   </tr>
                   <% end %>
                 </tbody>
@@ -68,4 +108,38 @@
       </div>
     </div>
   </div>
+<script>
+  $(document).ready(function() {
 
+    $('#fecha').daterangepicker({
+      singleDatePicker: true,
+      calender_style: "picker_4",
+      format: 'YYYY-MM-DD',
+      showDropdowns: true
+    });
+
+    $('#agrupador').val('<%=@agrupador%>');
+
+    function fn_imprimir_orden_trabajo(){
+      $('#imprimir_orden_fecha').val($('#fecha').val());
+      $('#imprimir_orden_agrupador').val($('#agrupador').val());
+      $('#imprimir_orden').submit();
+    }
+
+    function fn_imprimir_lista_pedidos(){
+
+      if($('#agrupador').val()==""){
+       alert("Seleccione el Agrupador");
+        return false;
+      }
+
+      $('#imprimir_pedidos_fecha').val($('#fecha').val());
+      $('#imprimir_pedidos_agrupador').val($('#agrupador').val());
+      $('#imprimir_pedidos').submit();
+    }
+
+    $('#imprimir_pedidos_btn').click(fn_imprimir_lista_pedidos  );
+    $('#imprimir_orden_btn').click(fn_imprimir_orden_trabajo);
+
+  });
+</script>

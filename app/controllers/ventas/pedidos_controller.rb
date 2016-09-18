@@ -7,7 +7,14 @@ class Ventas::PedidosController < PrivateController
   # GET /ventas/pedidos.json
   def index
     @fecha = params[:fecha].blank? ? Date.today : params[:fecha]
-    @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente}).where('pedidos.fecha = ?', @fecha).page params[:page]
+    @agrupador = params[:agrupador]
+    if @agrupador.blank?
+      @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente}).where('pedidos.fecha = ?', @fecha).page params[:page]
+    else
+      @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente}).where('pedidos.fecha = ? and clientes.agrupador_cliente_id =?', @fecha, @agrupador).page params[:page]
+    end
+
+    @agrupador_cliente = Ventas::AgrupadorCliente.select('*').order('nombre')
   end
 
   # GET /ventas/pedidos/1
@@ -82,6 +89,27 @@ class Ventas::PedidosController < PrivateController
     @ventas_pedido_detalle.destroy
     redirect_to @ventas_pedido, notice: 'Detalle eliminado exitosamente!'
   end
+
+  def rpt_lista_pedidos
+    @fecha = params[:imprimir_pedidos_fecha]
+    @agrupador = params[:imprimir_pedidos_agrupador]
+    @nombre_agrupador = ''
+
+    if @agrupador.blank?
+      @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente}).where('pedidos.fecha = ?', @fecha).order('clientes.primer_apellido')
+    else
+      @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente}).where('pedidos.fecha = ? and clientes.agrupador_cliente_id =?', @fecha, @agrupador).order('clientes.primer_apellido')
+      @nombre_agrupador = Ventas::AgrupadorCliente.find(@agrupador).nombre
+    end
+    render layout: false
+  end
+
+  def rpt_orden_trabajo
+   @fecha = params[:imprimir_orden_fecha]
+   @productos = Ventas::Pedido.select('productos.nombre as nombre_producto,count(pedido_detalles.id) as cantidad_pedidos').joins({:rel_pedido_detalle => :rel_producto}).where('pedidos.fecha = ?', @fecha).group('productos.nombre').order('productos.nombre')
+   render layout: false
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

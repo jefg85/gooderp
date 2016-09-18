@@ -1,6 +1,3 @@
-<%= javascript_include_tag 'forms.controls' %>
-<%= stylesheet_link_tag    'forms.controls', media: 'all' %>
-
 <%= form_for @ventas_pedido, html: {class: 'form-horizontal form-label-left'} do |f| %>
 
     <% if @ventas_pedido.errors.any? %>
@@ -72,12 +69,7 @@
           placeholder: "Seleccione un cliente",
           allowClear: true
         });
-/*
-        $('#ventas_pedido_fecha').daterangepicker({
-          singleDatePicker: true,
-          calender_style: "picker_4"
-        });
-*/
+
       });
     </script>
 <% end %>

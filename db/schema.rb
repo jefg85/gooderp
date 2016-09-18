@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 20160918022232) do
 
   create_table "ventas_menu_detalles", force: :cascade do |t|
     t.integer  "menu_id",     null: false
-    t.string   "producto_id", null: false
+    t.integer  "producto_id", null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end

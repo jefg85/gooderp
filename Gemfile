@@ -15,6 +15,9 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 
 gem 'kaminari'
 
+# Gema para convertir las cadenas con espacios en blancos a nulas
+gem 'strip_attributes'
+
 # ********************************************************
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

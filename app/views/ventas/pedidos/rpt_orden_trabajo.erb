@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de pedidos</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="nav-md" style="background-color: #ffffff">
+<div style="width: 650px; background-color: #ffffff">
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="pull-right">
+        <%= Date.today %> <%= Time.now.hour %>:<%= Time.now.min %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <h2>GOODFOOD</h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <h5>Orden de trabajo</h5>
+    </div>
+  </div>
+
+  <div class="row" style="padding-top: 20px">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <table id="pedidos" class="table table-striped" style="width: 650px; font-size: 10px">
+        <thead>
+        <tr>
+          <th style="width: 600px">Producto</th>
+          <th style="width: 50px">Cantidad</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @productos.each do |p| %>
+            <tr>
+              <td>
+                <%= p.nombre_producto %>
+              </td>
+              <td>
+                <%= p.cantidad_pedidos %>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+<script type="text/javascript" charset="utf-8">
+  (function() {
+    window.print();
+  })();
+</script>
+</body>
+</html>

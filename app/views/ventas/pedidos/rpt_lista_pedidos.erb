@@ -51,12 +51,14 @@
               <td colspan="4">
                 <table style="width: 400px">
                   <% ventas_pedido.rel_pedido_detalle.each do |pd| %>
-                      <tr>
-                        <td style="width: 200px"><%= pd.rel_producto.nombre %></td>
-                        <td style="width: 50px"><%= pd.precio %></td>
-                        <td style="width: 50px"><%= pd.cantidad %></td>
-                        <td style="width: 50px"><%= pd.precio * pd.cantidad %></td>
-                      </tr>
+                      <% unless pd.rel_producto.interno %>
+                        <tr>
+                          <td style="width: 200px"><%= pd.rel_producto.nombre %></td>
+                          <td style="width: 50px"><%= pd.precio %></td>
+                          <td style="width: 50px"><%= pd.cantidad %></td>
+                          <td style="width: 50px"><%= pd.precio * pd.cantidad %></td>
+                        </tr>
+                      <% end %>
                   <% end %>
                 </table>
               </td>

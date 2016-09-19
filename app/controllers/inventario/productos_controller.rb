@@ -69,6 +69,6 @@ class Inventario::ProductosController < PrivateController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def inventario_producto_params
-      params.require(:inventario_producto).permit(:nombre, :descripcion)
+      params.require(:inventario_producto).permit(:nombre, :descripcion, :precio, :interno)
     end
 end

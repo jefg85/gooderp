@@ -1,0 +1,2 @@
+module Facturacion::ConsultaPedidosHelper
+end

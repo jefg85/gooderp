@@ -5,6 +5,11 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'home#index'
 
+  namespace :facturacion do
+    get 'consulta_pedidos/index'
+    get 'consulta_pedidos_fecha/index'
+  end
+
   namespace :ventas do
 
     resources :pedidos

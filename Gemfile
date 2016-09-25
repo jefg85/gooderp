@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 # Gema para autenticacion
 gem 'devise'
 
+# Gema para conexion a posrgres
 gem 'pg'
 
 gem 'actionpack-page_caching'
@@ -13,10 +14,14 @@ gem 'actionpack-action_caching'
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 
+# Paginacion
 gem 'kaminari'
 
 # Gema para convertir las cadenas con espacios en blancos a nulas
 gem 'strip_attributes'
+
+# Authorization Gem for Ruby on Rails.
+gem 'pundit'
 
 # ********************************************************
 

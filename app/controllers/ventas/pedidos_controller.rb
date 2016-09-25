@@ -110,6 +110,42 @@ class Ventas::PedidosController < PrivateController
    render layout: false
   end
 
+  def credito
+    fecha = params[:fecha].blank? ? Date.today : params[:fecha]
+    agrupador = params[:agrupador]
+
+    ActiveRecord::Base.transaction do
+      ventas_pedido = Ventas::Pedido.find(params[:id])
+      cuenta_activa = nil
+      cuenta = Facturacion::Cuentum.where('cliente_id = ? and situacion = 0', ventas_pedido.cliente_id)
+      if cuenta.blank?
+        cuenta_activa = Facturacion::Cuentum.new
+        cuenta_activa.fecha_inicio = ventas_pedido.fecha
+        cuenta_activa.cliente_id = ventas_pedido.cliente_id
+        cuenta_activa.situacion = 0
+        cuenta_activa.save
+      else
+        cuenta_activa = cuenta[0]
+      end
+
+      cuenta_detalle = Facturacion::CuentaDetalle.new
+      cuenta_detalle.cuenta_id = cuenta_activa.id
+      cuenta_detalle.pedido_id = ventas_pedido.id
+      cuenta_detalle.save
+
+      redirect_to ventas_pedidos_url + '?fecha='+fecha+'&agrupador='+agrupador, notice: 'El pedido se agregado a la cuenta de crédito'
+    end
+  end
+
+  def contado
+    fecha = params[:fecha].blank? ? Date.today : params[:fecha]
+    agrupador = params[:agrupador]
+
+    ventas_pedido = Ventas::Pedido.find(params[:id])
+    cuenta_detalle = ventas_pedido.rel_cuenta_detalle
+    cuenta_detalle.destroy
+    redirect_to ventas_pedidos_url + '?fecha='+fecha+'&agrupador='+agrupador, notice: 'El pedido se saco de la cuenta y quedo al contado'
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

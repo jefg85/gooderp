@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     post 'pedidos/borrar_detalle'
     post 'pedidos/rpt_lista_pedidos'
     post 'pedidos/rpt_orden_trabajo'
+    post 'pedidos/credito'
+    post 'pedidos/contado'
 
     resources :agrupador_clientes
     resources :clientes

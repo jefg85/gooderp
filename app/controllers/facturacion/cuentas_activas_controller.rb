@@ -9,6 +9,10 @@ class Facturacion::CuentasActivasController < PrivateController
   end
 
   def detalle
+    @cuenta_id = params[:id].to_i
+    @cuenta = Facturacion::Cuentum.find(@cuenta_id)
+    @cliente = @cuenta.rel_cliente
+    @pedidos = Ventas::Pedido.select('pedidos.id, pedidos.fecha, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins(:rel_cuenta_detalle,{:rel_cliente => :rel_agrupador_cliente}).where('cuenta_detalles.cuenta_id = ?', @cuenta_id).order('pedidos.fecha')
   end
 
   private

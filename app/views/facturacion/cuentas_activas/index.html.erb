@@ -53,7 +53,9 @@
               <% @cuentas.each do |c| %>
                   <tr>
                     <td>
+                      <a href="/facturacion/cuentas_activas/detalle?id=<%=c.id%>">
                       <%= c.nombre_cliente  %>
+                      </a>
                     </td>
                     <td>
                       <%= c.cantidad_pedido  %>

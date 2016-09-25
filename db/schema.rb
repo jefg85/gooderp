@@ -72,6 +72,10 @@ ActiveRecord::Schema.define(version: 20160918022232) do
     t.datetime "locked_at"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.boolean  "cliente",            default: false,  null: false
+    t.boolean  "vendedor",           default: false,  null: false
+    t.boolean  "gerente",            default: false,  null: false
+    t.boolean  "admin",              default: false,  null: false
   end
 
   add_index "seguridad_usuarios", ["confirmation_token"], name: "index_seguridad_usuarios_on_confirmation_token", unique: true, using: :btree

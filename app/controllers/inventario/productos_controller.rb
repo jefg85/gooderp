@@ -71,4 +71,9 @@ class Inventario::ProductosController < PrivateController
     def inventario_producto_params
       params.require(:inventario_producto).permit(:nombre, :descripcion, :precio, :interno)
     end
+
+  def autorizacion!
+    authorize :controller_inventario_productos, :index?
+  end
+
 end

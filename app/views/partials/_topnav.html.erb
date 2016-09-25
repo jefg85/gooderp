@@ -10,7 +10,8 @@
       <ul class="nav navbar-nav navbar-right">
         <li class="">
           <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            <%= image_tag "img.jpg" %>
+            <%= gravatar_image_tag(current_usuario.email, { alt: current_usuario.email }) %>
+
             <% if usuario_signed_in? %>
               <%= current_usuario.email %>
             <% end %>

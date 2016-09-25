@@ -76,4 +76,8 @@ class Ventas::ClientesController < PrivateController
     def ventas_cliente_params
       params.require(:ventas_cliente).permit(:primer_nombre, :segundo_nombre, :primer_apellido, :segundo_apellido, :sexo, :cedula, :fecha_nacimiento, :agrupador_cliente_id, :email)
     end
+
+  def autorizacion!
+    authorize :controller_ventas_clientes, :index?
+  end
 end

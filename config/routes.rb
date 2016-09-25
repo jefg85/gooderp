@@ -1,16 +1,24 @@
 Rails.application.routes.draw do
 
-  devise_for :usuarios, class_name: "Seguridad::Usuario"
+  devise_for :usuarios, class_name: 'Seguridad::Usuario'
 
   # You can have the root of your site routed with "root"
   root 'home#index'
 
   namespace :facturacion do
-    get 'consulta_pedidos/index'
-    get 'consulta_pedidos_fecha/index'
+    get 'pedidos/index'
+    get 'pedidos_fecha/index'
+
+    get 'cuentas_activas/detalle'
+    get 'cuentas_activas/index'
+
+    get 'cuentas_por_cliente/detalle'
+    get 'cuentas_por_cliente/index'
   end
 
   namespace :ventas do
+    get 'venta_por_cliente/index'
+    get 'venta_por_cliente/detalle'
 
     resources :pedidos
     post 'pedidos/crear_detalle'

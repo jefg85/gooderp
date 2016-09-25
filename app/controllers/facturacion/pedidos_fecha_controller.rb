@@ -1,4 +1,4 @@
-class Facturacion::ConsultaPedidosFechaController < ApplicationController
+class Facturacion::PedidosFechaController < PrivateController
   def index
     @fecha_inicio = params[:fecha_inicio].blank? ? Date.today : params[:fecha_inicio]
     @fecha_fin = params[:fecha_fin].blank? ? Date.today : params[:fecha_fin]
@@ -17,4 +17,12 @@ class Facturacion::ConsultaPedidosFechaController < ApplicationController
 
     @agrupador_cliente = Ventas::AgrupadorCliente.select('*').order('nombre')
   end
+
+  private
+
+  def autorizacion!
+    authorize :controller_facturacion_pedidos_fecha, :index?
+  end
+
+
 end

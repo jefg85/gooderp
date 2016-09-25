@@ -100,7 +100,8 @@
   float: left;
 }
 .img-circle.profile_img {
-  width: 70%;
+  width: 80%;
+  height: 80%;
   background: #fff;
   margin-left: 15%;
   z-index: 1000;

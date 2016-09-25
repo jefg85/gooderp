@@ -9,6 +9,10 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  def pundit_user
+    current_usuario
+  end
+
   protected
 
   def configure_permitted_parameters

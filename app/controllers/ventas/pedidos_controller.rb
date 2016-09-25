@@ -27,10 +27,6 @@ class Ventas::PedidosController < PrivateController
     @ventas_pedido = Ventas::Pedido.new
   end
 
-  # GET /ventas/pedidos/1/edit
-  def edit
-  end
-
   # POST /ventas/pedidos
   # POST /ventas/pedidos.json
   def create
@@ -172,5 +168,9 @@ class Ventas::PedidosController < PrivateController
 
     def ventas_pedido_detalle_params
       params.require(:ventas_pedido_detalle).permit(:pedido_id, :producto_id, :cantidad, :precio)
+    end
+
+    def autorizacion!
+      authorize :controller_ventas_pedidos, :index?
     end
 end

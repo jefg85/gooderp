@@ -13,7 +13,7 @@
       <!-- menu profile quick info -->
       <div class="profile">
         <div class="profile_pic">
-          <%= image_tag "img.jpg", :class => "img-circle profile_img"  %>
+          <%= gravatar_image_tag(current_usuario.email, { alt: current_usuario.email, class: 'img-circle profile_img' }) %>
         </div>
         <div class="profile_info">
           <span>Bienvenido,</span>
@@ -42,18 +42,43 @@
             </li>
             <li><a><i class="fa fa-edit"></i> Ventas <span class="fa fa-chevron-down"></span></a>
               <ul class="nav child_menu" style="display: none">
-                <li><a href="/ventas/pedidos">Pedidos</a>
-                </li>
-                <li><a href="/ventas/clientes">Clientes</a>
-                </li>                
+                <% if policy(:controller_ventas_pedidos).index? %>
+                  <li><a href="/ventas/pedidos">Pedidos</a></li>
+                <% end %>
+                <% if policy(:controller_ventas_clientes).index? %>
+                  <li><a href="/ventas/clientes">Clientes</a></li>
+                <% end %>
               </ul>
             </li>
             <li><a><i class="fa fa-desktop"></i> Inventario <span class="fa fa-chevron-down"></span></a>
               <ul class="nav child_menu" style="display: none">
-              <li><a href="/inventario/productos">Productos</a>
-                </li>               
+                <% if policy(:controller_inventario_productos).index? %>
+                  <li><a href="/inventario/productos">Productos</a></li>
+                <% end %>
               </ul>
-            </li>                       
+            </li>
+            <li>
+              <a><i class="fa fa-money"></i> Facturación <span class="fa fa-chevron-down"></span></a>
+              <ul class="nav child_menu" style="display: none">
+                <li>
+                  <a>
+                    Consultas
+                    <span class="fa fa-chevron-down"></span>
+                  </a>
+                  <ul class="nav child_menu" style="display: none">
+                    <% if policy(:controller_facturacion_pedidos).index? %>
+                        <li><a href="/facturacion/pedidos/index">Pedidos</a></li>
+                    <% end %>
+                    <% if policy(:controller_facturacion_pedidos_fecha).index? %>
+                        <li><a href="/facturacion/pedidos_fecha/index">Pedidos por fecha</a></li>
+                    <% end %>
+                    <% if policy(:controller_facturacion_cuentas_activas).index? %>
+                        <li><a href="/facturacion/cuentas_activas/index">Cuentas Activas</a></li>
+                    <% end %>
+                  </ul>
+                </li>
+              </ul>
+            </li>
           </ul>
         </div>
 

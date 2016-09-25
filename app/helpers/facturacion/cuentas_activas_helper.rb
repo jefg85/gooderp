@@ -1,0 +1,2 @@
+module Facturacion::CuentasActivasHelper
+end

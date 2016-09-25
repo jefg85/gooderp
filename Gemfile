@@ -23,6 +23,9 @@ gem 'strip_attributes'
 # Authorization Gem for Ruby on Rails.
 gem 'pundit'
 
+# A configurable and documented Rail view helper for adding gravatars into your Rails application
+gem 'gravatar_image_tag'
+
 # ********************************************************
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -71,5 +74,8 @@ group :development do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+
+  # Static code analyzer, based on the community Ruby style guide
+  gem 'rubocop', '~> 0.43.0', require: false
 end
 

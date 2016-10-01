@@ -11,6 +11,17 @@
 
 <div class="form-group">
   <label for="inventario_producto_primer_nombre" class="control-label col-md-3 col-sm-3 col-xs-12">
+    Agrupador
+    <span class="required">*</span>
+  </label>
+  <div class="col-md-6 col-sm-6 col-xs-12">
+    <%= f.collection_select(:categoria_producto_id, @categorias, :id, :nombre, {include_blank: true}, {class: 'form-control col-md-7 col-xs-12',
+                                                                                                   required: 'required'}) %>
+  </div>
+</div>
+
+<div class="form-group">
+  <label for="inventario_producto_primer_nombre" class="control-label col-md-3 col-sm-3 col-xs-12">
     Nombre
     <span class="required">*</span>
   </label>
@@ -35,9 +46,23 @@
   </div>
 </div>
 <div class="form-group">
-  <%= f.label :interno, 'Interno', {class: 'control-label col-md-3 col-sm-3 col-xs-12'} %>
-  <div class="col-md-6 col-sm-6 col-xs-12">
-    <%= f.check_box :interno, {class: 'form-control col-md-7 col-xs-12'} %>
+  <div class="col-sm-offset-3 col-md-6 col-sm-6 col-xs-12">
+    <div class="checkbox">
+      <label>
+      <%= f.check_box :interno %>
+        Interno
+      </label>
+    </div>
+  </div>
+</div>
+<div class="form-group">
+  <div class="col-sm-offset-3 col-md-6 col-sm-6 col-xs-12">
+    <div class="checkbox">
+      <label>
+        <%= f.check_box :pasivo %>
+        Pasivo
+      </label>
+    </div>
   </div>
 </div>
 <div class="ln_solid"></div>

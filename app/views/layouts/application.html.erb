@@ -1,28 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= content_for?(:title) ? yield(:title) : "GoodERP" %> </title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <title><%= content_for?(:title) ? yield(:title) : 'GoodERP' %> </title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-
 <body class="nav-md">
-  <div class="container body">
-    <% flash.each do |key, value| %>
-        <div align="center" id="flash" class="alert-dismissible fade in alert alert-<%= key %>">
-          <button aria-label="Close" data-dismiss="alert" class="close" type="button">
-            <span aria-hidden="true">×</span>
-          </button>
-          <%= value %>
-        </div>
-    <% end %>
-    <%= render "partials/sidenav" %>
-    <%= render "partials/topnav" %>
+<div class="container body">
+  <% flash.each do |key, value| %>
+      <div align="center" id="flash" class="alert-dismissible fade in alert alert-<%= key %>">
+        <button aria-label="Close" data-dismiss="alert" class="close" type="button">
+          <span aria-hidden="true">×</span>
+        </button>
+        <%= value %>
+      </div>
+  <% end %>
+  <div class="main_container">
+    <%= render 'partials/sidenav' %>
+    <%= render 'partials/topnav' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= yield %>
-    <%= render "partials/footer" %>
   </div>
+</div>
 </body>
-
 </html>

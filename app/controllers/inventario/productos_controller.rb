@@ -1,10 +1,16 @@
 class Inventario::ProductosController < PrivateController
   before_action :set_inventario_producto, only: [:show, :edit, :update, :destroy]
+  before_action :set_catalogos, only: [:index, :new, :create, :edit, :update, :destroy]
 
   # GET /inventario/productos
   # GET /inventario/productos.json
   def index
-    @inventario_productos = Inventario::Producto.select('*').order('nombre').page params[:page]
+    @categoria_id = params[:categoria]
+    @buscar = params[:buscar].to_s
+    @inventario_productos  = Inventario::Producto.select('productos.id, productos.nombre, productos.precio, categoria_productos.nombre as categoria')
+                                                 .joins(:rel_categoria_producto).order('productos.nombre').page params[:page]
+    @inventario_productos = @inventario_productos.where('productos.nombre ilike ?',  '%' + @buscar + '%') unless @buscar.blank?
+    @inventario_productos = @inventario_productos.where(categoria_producto_id: @categoria_id) unless @categoria_id.blank?
   end
 
   # GET /inventario/productos/1
@@ -72,8 +78,12 @@ class Inventario::ProductosController < PrivateController
       params.require(:inventario_producto).permit(:nombre, :descripcion, :precio, :interno)
     end
 
-  def autorizacion!
-    authorize :controller_inventario_productos, :index?
-  end
+    def set_catalogos
+      @categorias = Inventario::CategoriaProducto.select('*').where(pasivo: false).order('nombre')
+    end
+
+    def autorizacion!
+      authorize :controller_inventario_productos, :index?
+    end
 
 end

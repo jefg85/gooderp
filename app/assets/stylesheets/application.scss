@@ -25,3 +25,19 @@
 @import "css/select/select2.min";
 // Custom Theme Style
 @import "css/custom";
+
+
+ul.content-list{
+  list-style: outside none none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.content-list > li::before, ul.content-list > li::after {
+  content: " ";
+  display: table;
+}
+
+ul.content-list > li {
+  border-bottom: 1px solid #eee;
+}

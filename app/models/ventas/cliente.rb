@@ -1,5 +1,7 @@
 class Ventas::Cliente < ActiveRecord::Base
 	strip_attributes
+	has_paper_trail
+
 	belongs_to :rel_agrupador_cliente, class_name: 'Ventas::AgrupadorCliente', foreign_key: 'agrupador_cliente_id'
 
 	def nombre_completo

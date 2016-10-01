@@ -37,6 +37,9 @@ Style/RedundantBegin:
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#begin-implicit'
   Enabled: false
 
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
 Documentation:
   Description: 'Document classes and non-namespace modules.'
   Enabled: false

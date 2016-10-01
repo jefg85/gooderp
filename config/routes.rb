@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   devise_for :usuarios, class_name: 'Seguridad::Usuario'
 
   # You can have the root of your site routed with "root"
@@ -30,9 +29,8 @@ Rails.application.routes.draw do
 
     resources :agrupador_clientes
     resources :clientes
-
   end
- 
+
   namespace :inventario do
     resources :producto_detalles
     resources :productos
@@ -40,8 +38,6 @@ Rails.application.routes.draw do
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
-
-  
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

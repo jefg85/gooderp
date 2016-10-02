@@ -29,6 +29,9 @@ gem 'gravatar_image_tag'
 # Track changes to your models' data. Good for auditing or versioning.
 gem 'paper_trail'
 
+# Heavy metal SOAP client
+gem 'savon'
+
 # ********************************************************
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

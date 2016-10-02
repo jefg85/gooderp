@@ -8,10 +8,10 @@ class Utils::Jasperserver
     @parametros = []
     @codigo_reporte = codigo_reporte
     @formato = formato.nil? ? nil : formato
-    @url_reporte = codigo_reporte.nil? ? nil : Service::Common::RecursoService.new.obtener_recurso(codigo_reporte).url
-    @servidor = codigo_reporte.nil? ? nil : Service::Common::ParametroService.new.obtener_parametro('101').valor
-    @usuario = codigo_reporte.nil? ? nil : Service::Common::ParametroService.new.obtener_parametro('102').valor
-    @clave = codigo_reporte.nil? ? nil : Service::Common::ParametroService.new.obtener_parametro('103').valor
+    @url_reporte = codigo_reporte.nil? ? nil : Service::Common::RecursoService.new.obtener_recurso_url(codigo_reporte)
+    @servidor = codigo_reporte.nil? ? nil : Service::Common::ParametroService.new.obtener_parametro_valor('001')
+    @usuario = codigo_reporte.nil? ? nil : Service::Common::ParametroService.new.obtener_parametro_valor('002')
+    @clave = codigo_reporte.nil? ? nil : Service::Common::ParametroService.new.obtener_parametro_valor('003')
   end
 
   def agregar_parametro(codigo, valor)

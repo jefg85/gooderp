@@ -47,6 +47,7 @@
                 <th style="width: 70%">Cliente</th>
                 <th style="width: 15%">Cantidad de Pedidos</th>
                 <th style="width: 15%">Total</th>
+                <th style="width: 15%">Imprimir</th>
               </tr>
               </thead>
               <tbody>
@@ -62,6 +63,12 @@
                     </td>
                     <td>
                       <%= c.monto_cuenta  %>
+                    </td>
+                    <td>
+                      <%= form_tag('/facturacion/cuentas_activas/imprimir_cuenta', target: '_blank', method: 'post', id: 'frm_imprimir_cuenta')do %>
+                          <input type="hidden" name="id" value="<%=c.id%>"/>
+                          <input type="submit" value="Imprimir" class="btn btn-primary"/>
+                      <% end %>
                     </td>
                   </tr>
               <% end %>

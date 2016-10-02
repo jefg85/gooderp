@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
     get 'cuentas_activas/detalle'
     get 'cuentas_activas/index'
+    post 'cuentas_activas/imprimir_cuenta'
 
     get 'cuentas_por_cliente/detalle'
     get 'cuentas_por_cliente/index'

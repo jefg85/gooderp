@@ -15,6 +15,13 @@ class Facturacion::CuentasActivasController < PrivateController
     @pedidos = Ventas::Pedido.select('pedidos.id, pedidos.fecha, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins(:rel_cuenta_detalle,{:rel_cliente => :rel_agrupador_cliente}).where('cuenta_detalles.cuenta_id = ?', @cuenta_id).order('pedidos.fecha')
   end
 
+  def imprimir_cuenta
+    cuenta_id = params[:id].to_i
+    server = Utils::Jasperserver.new('GE_FT001', :PDF)
+    server.agregar_parametro('cuenta_id',cuenta_id)
+    send_data server.ejecutar_reporte, type: server.obtener_content_type, filename: server.obtener_nombre, disposition: 'inline'
+  end
+
   private
 
   def autorizacion!

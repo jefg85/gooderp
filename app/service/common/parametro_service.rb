@@ -3,7 +3,7 @@
 class Service::Common::ParametroService
 
   def initialize
-    @parametros = [{ clave: '001', valor: 'http://ec2-52-54-136-112.compute-1.amazonaws.com:8080/jasperserver/services/repository', descripcion: '' },
+    @parametros = [{ clave: '001', valor: 'http://localhost:8080/jasperserver/services/repository', descripcion: '' },
                    { clave: '002', valor: 'gooderp_user', descripcion: '' },
                    { clave: '003', valor: 'codeegood001$', descripcion: '' }]
   end

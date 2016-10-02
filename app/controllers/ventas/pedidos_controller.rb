@@ -9,11 +9,10 @@ class Ventas::PedidosController < PrivateController
     @fecha = params[:fecha].blank? ? Date.today : params[:fecha]
     @agrupador = params[:agrupador]
     if @agrupador.blank?
-      @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente}).where('pedidos.fecha = ?', @fecha).page params[:page]
+      @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente}).where('pedidos.fecha = ?', @fecha)
     else
-      @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente}).where('pedidos.fecha = ? and clientes.agrupador_cliente_id =?', @fecha, @agrupador).page params[:page]
+      @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente}).where('pedidos.fecha = ? and clientes.agrupador_cliente_id =?', @fecha, @agrupador)
     end
-
     @agrupador_cliente = Ventas::AgrupadorCliente.select('*').order('nombre')
   end
 

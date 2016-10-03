@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 20161001090118) do
     t.boolean  'interno',     default:false, null: false
     t.datetime 'created_at',  null: false
     t.datetime 'updated_at',  null: false
+    t.boolean  'pasivo',      default:false, null: false
   end
 
   create_table 'inventario_categoria_productos', force: :cascade do |t|

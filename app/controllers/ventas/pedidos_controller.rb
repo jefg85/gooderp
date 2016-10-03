@@ -86,17 +86,12 @@ class Ventas::PedidosController < PrivateController
   end
 
   def rpt_lista_pedidos
-    @fecha = params[:imprimir_pedidos_fecha]
-    @agrupador = params[:imprimir_pedidos_agrupador]
-    @nombre_agrupador = ''
-
-    if @agrupador.blank?
-      @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente}).where('pedidos.fecha = ?', @fecha).order('clientes.primer_apellido')
-    else
-      @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente}).where('pedidos.fecha = ? and clientes.agrupador_cliente_id =?', @fecha, @agrupador).order('clientes.primer_apellido')
-      @nombre_agrupador = Ventas::AgrupadorCliente.find(@agrupador).nombre
-    end
-    render layout: false
+    fecha = params[:imprimir_pedidos_fecha]
+    agrupador = params[:imprimir_pedidos_agrupador]
+    server = Utils::Jasperserver.new('GE_VT001', :PDF)
+    server.agregar_parametro('fecha',fecha)
+    server.agregar_parametro('agrupador_cliente_id',agrupador)
+    send_data server.ejecutar_reporte, type: server.obtener_content_type, filename: server.obtener_nombre, disposition: 'inline'
   end
 
   def rpt_orden_trabajo

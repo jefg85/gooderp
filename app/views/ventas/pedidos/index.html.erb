@@ -1,136 +1,131 @@
-<!-- page content -->
 <div class="right_col" role="main">
   <div class="">
     <div class="page-title">
-      <div class="title_left">
-        <h3>Pedidos (<%= @ventas_pedidos.length %>)</h3>
-      </div> 
-      <div class="title_right">
-      </div>          
+      <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-12"><h3>Pedidos (<%= @ventas_pedidos.length %>)</h3></div>
+        <div class="col-md-4 col-sm-4 col-xs-12"><h3>Plato Principal (<%= @cantidad_plato_principal %>)</h3></div>
+        <div class="col-md-4 col-sm-4 col-xs-12"><h3>Extras (<%= @cantidad_extras %>)</h3></div>
+      </div>
     </div>
     <div class="clearfix"></div>
-    <div class="row">
-      <div class="col-md-12 col-sm-12 col-xs-12">
-        <div class="x_panel">
-          <div class="x_title">
-            <div class="row">
-              <div class="col-md-7 col-sm-7 col-xs-7">
-                <form id="form_buscar" action="/ventas/pedidos" class="form-horizontal form-label-left">
-                  <div class="row">
-                      <label for="fecha" class="control-label col-md-1 col-sm-1 col-xs-1">
-                        Fecha
-                      </label>
+    <div class="x_panel">
+      <div class="x_title">
+        <div class="row">
+          <div class="col-md-7 col-sm-12 col-xs-12">
+            <form id="form_buscar" action="/ventas/pedidos" class="form-horizontal form-label-left">
+              <div class="row">
+                <label for="fecha" class="control-label col-md-1 col-sm-1 col-xs-2">
+                  Fecha
+                </label>
 
-                      <div class="col-md-3 col-sm-3 col-xs-3">
-                        <input type="text" readonly="readonly" name="fecha" id="fecha" class="form-control col-md-7 col-xs-12" value="<%=@fecha%>"/>
-                      </div>
-                      <div class="col-md-3 col-sm-3 col-xs-3">
-                        <%= select_tag 'agrupador', options_for_select(@agrupador_cliente.collect {|a| [ a[:nombre], a[:id] ] }),{ include_blank: true, class: 'form-control' } %>
-                      </div>
-                      <div class="col-md-3 col-sm-3 col-xs-3">
-                        <input type="submit" value="Buscar" class="btn btn-primary"/>
-                      </div>
-                  </div>
-                </form>
-              </div>
-              <div class="col-md-5 col-sm-5 col-xs-5">
-                  <div class="row">
-                    <div class="col-md-4 col-sm-4 col-xs-4">
-                      <%= form_tag '/ventas/pedidos/rpt_orden_trabajo', {id: 'imprimir_orden', target:'_blank', method: 'post' } do %>
-                        <input type="hidden" name="imprimir_orden_fecha" id="imprimir_orden_fecha"/>
-                        <input type="hidden" name="imprimir_orden_agrupador" id="imprimir_orden_agrupador"/>
-                        <button id="imprimir_orden_btn" class="btn btn-info">Orden de trabajo</button>
-                      <% end %>
-                    </div>
-                    <div class="col-md-4 col-sm-4 col-xs-4">
-                      <%= form_tag '/ventas/pedidos/rpt_lista_pedidos', {id: 'imprimir_pedidos', target:'_blank', method: 'post' } do %>
-                        <input type="hidden" name="imprimir_pedidos_fecha" id="imprimir_pedidos_fecha"/>
-                        <input type="hidden" name="imprimir_pedidos_agrupador" id="imprimir_pedidos_agrupador"/>
-                        <button id="imprimir_pedidos_btn" class="btn btn-info">Imprimir Pedidos</button>
-                      <% end %>
-                    </div>
-                    <div class="col-md-4 col-sm-4 col-xs-4">
-                      <%= link_to 'Nuevo', new_ventas_pedido_path, {class: 'btn btn-primary'} %>
-                    </div>
+                <div class="col-md-3 col-sm-3 col-xs-4">
+                  <input type="text" readonly="readonly" name="fecha" id="fecha" class="form-control col-md-7 col-xs-12" value="<%= @fecha %>"/>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-4">
+                  <%= select_tag 'agrupador', options_for_select(@agrupador_cliente.collect { |a| [a[:nombre], a[:id]] }), {include_blank: true, class: 'form-control'} %>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-2">
+                  <input type="submit" value="Buscar" class="btn btn-primary"/>
                 </div>
               </div>
-            </div>
-            <div class="clearfix"></div>
+            </form>
           </div>
-          <div class="x_content" style="display: block;">
-            <table id="pedidos" class="table table-striped table-hover">
-              <thead>
-                <tr>
-                  <th style="width: 70%">Cliente/Pedido</th>
-                  <th style="width: 10%">Total</th>
-                  <th style="width: 10%">Crédito</th>
-                  <th style="width: 20%">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @ventas_pedidos.each do |ventas_pedido| %>
-                <tr class="<%= ventas_pedido.al_credito? ? 'danger' : '' %>">
-                    <td>
-                      <a href="/ventas/pedidos/<%= ventas_pedido.id %>">
-                        <b>
-                        <%= ventas_pedido.grupo  %> /
-                        <%= ventas_pedido.email %> / 
-                        <%= ventas_pedido.primer_apellido %> <%= ventas_pedido.segundo_apellido %> <%= ventas_pedido.primer_nombre %> <%= ventas_pedido.segundo_nombre %>                      
-                        </b>
-                      </a>
-                      <table style="margin-left: 10px">
-                        <% ventas_pedido.rel_pedido_detalle.each do |pd| %>
-                          <tr>
-                            <td><%= pd.rel_producto.nombre %></td>
-                            <td style="padding-left: 10px"><%= pd.precio %></td>
-                            <td style="padding-left: 10px"><%= pd.cantidad %></td>
-                            <td style="padding-left: 10px"><%= pd.precio * pd.cantidad %></td>
-                          </tr>
-                        <% end %>
-                      </table>
-                    </td>
-                  <td>
-                    <%=
-                      total = 0.0
-                      ventas_pedido.rel_pedido_detalle.each do |pd|
-
-                        total = total + pd.cantidad * pd.precio
-                      end
-                      total
-                    %>
-                  </td>
-                  <td>
-                    <input type="checkbox" disabled="disabled" <%= ventas_pedido.al_credito? ? 'checked="checked"' : '' %>>
-                  </td>
-                  <td>
-                    <% if ventas_pedido.al_credito? %>
-                        <%= form_tag '/ventas/pedidos/contado', {id: 'frm_contado', method: 'post' } do %>
-                            <input type="hidden" name="id" value="<%= ventas_pedido.id %>">
-                            <input type="hidden" name="fecha" value="<%= @fecha %>">
-                            <input type="hidden" name="agrupador" value="<%= @agrupador %>">
-                            <input type="submit" value="Pasar al Contado" class="btn btn-primary">
-                        <% end %>
-                    <% else %>
-                        <%= form_tag '/ventas/pedidos/credito', {id: 'frm_credito', method: 'post' } do %>
-                            <input type="hidden" name="id" value="<%= ventas_pedido.id %>">
-                            <input type="hidden" name="fecha" value="<%= @fecha %>">
-                            <input type="hidden" name="agrupador" value="<%= @agrupador %>">
-                            <input type="submit" value="Agregar a la cuenta" class="btn btn-warning">
-                        <% end %>
-                    <% end %>
-                  </td>
-                  </tr>
-                  <% end %>
-                </tbody>
-              </table>
+          <div class="col-md-5 col-sm-12 col-xs-12">
+            <div class="row">
+              <div class="col-md-1 col-sm-1 col-xs-2"></div>
+              <div class="col-md-4 col-sm-3 col-xs-4">
+                <%= form_tag '/ventas/pedidos/rpt_orden_trabajo', {id: 'imprimir_orden', target: '_blank', method: 'post'} do %>
+                    <input type="hidden" name="imprimir_orden_fecha" id="imprimir_orden_fecha"/>
+                    <input type="hidden" name="imprimir_orden_agrupador" id="imprimir_orden_agrupador"/>
+                    <button id="imprimir_orden_btn" class="btn btn-info">Orden de trabajo</button>
+                <% end %>
+              </div>
+              <div class="col-md-4 col-sm-3 col-xs-4">
+                <%= form_tag '/ventas/pedidos/rpt_lista_pedidos', {id: 'imprimir_pedidos', target: '_blank', method: 'post'} do %>
+                    <input type="hidden" name="imprimir_pedidos_fecha" id="imprimir_pedidos_fecha"/>
+                    <input type="hidden" name="imprimir_pedidos_agrupador" id="imprimir_pedidos_agrupador"/>
+                    <button id="imprimir_pedidos_btn" class="btn btn-info">Imprimir Pedidos</button>
+                <% end %>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-2">
+                <%= link_to 'Nuevo', new_ventas_pedido_path, {class: 'btn btn-primary'} %>
+              </div>
             </div>
           </div>
         </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content" style="display: block;">
+        <div class="row bg-primary hidden-xs">
+          <div class="col-md-1 col-sm-1 col-xs-1"><strong>HORA</strong></div>
+          <div class="col-md-8 col-sm-8 col-xs-8"><strong>PEDIDO</strong></div>
+          <div class="col-md-1 col-sm-1 col-xs-1"><strong>TOTAL</strong></div>
+          <div class="col-md-2 col-sm-2 col-xs-2"><strong>ACCIONES</strong></div>
+        </div>
+        <br>
+        <% @ventas_pedidos.each do |ventas_pedido| %>
+            <div class="row <%= ventas_pedido.al_credito? ? 'bg-danger' : '' %>">
+              <div class="col-md-1 col-sm-1 col-xs-12">
+                <%= ventas_pedido.created_at.strftime('%H:%M:%S') %>
+              </div>
+              <div class="col-md-8 col-sm-8 col-xs-11">
+                <div class="row">
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <a href="/ventas/pedidos/<%= ventas_pedido.id %>">
+                      <b>
+                        <%= ventas_pedido.grupo %> <br>
+                        <%= ventas_pedido.email %> /
+                        <%= ventas_pedido.primer_apellido %> <%= ventas_pedido.segundo_apellido %> <%= ventas_pedido.primer_nombre %> <%= ventas_pedido.segundo_nombre %>
+                      </b>
+                    </a>
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <% ventas_pedido.rel_pedido_detalle.each do |pd| %>
+                        <div class="row" style="margin-left: 10px">
+                          <div class="col-md-7 col-sm-7 col-xs-7  "><%= pd.rel_producto.nombre %></div>
+                          <div class="col-md-1 col-sm-1 col-xs-1"><%= pd.precio %></div>
+                          <div class="col-md-1 col-sm-1 col-xs-1"><%= pd.cantidad %></div>
+                          <div class="col-md-1 col-sm-1 col-xs-1"><%= pd.precio * pd.cantidad %></div>
+                        </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-1 col-sm-1 col-xs-1">
+                <%=
+                  total = 0.0
+                  ventas_pedido.rel_pedido_detalle.each { |pd| total = total + pd.cantidad * pd.precio }
+                  total
+                %>
+              </div>
+              <div class="col-md-2 col-sm-2 col-xs-12">
+                <div class="pull-right">
+                  <% if ventas_pedido.al_credito? %>
+                      <%= form_tag '/ventas/pedidos/contado', {id: 'frm_contado', method: 'post'} do %>
+                          <input type="hidden" name="id" value="<%= ventas_pedido.id %>">
+                          <input type="hidden" name="fecha" value="<%= @fecha %>">
+                          <input type="hidden" name="agrupador" value="<%= @agrupador %>">
+                          <input type="submit" value="Pasar al Contado" class="btn btn-primary">
+                      <% end %>
+                  <% else %>
+                      <%= form_tag '/ventas/pedidos/credito', {id: 'frm_credito', method: 'post'} do %>
+                          <input type="hidden" name="id" value="<%= ventas_pedido.id %>">
+                          <input type="hidden" name="fecha" value="<%= @fecha %>">
+                          <input type="hidden" name="agrupador" value="<%= @agrupador %>">
+                          <input type="submit" value="Agregar a la cuenta" class="btn btn-warning">
+                      <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <br>
+        <% end %>
       </div>
     </div>
   </div>
+</div>
 <script>
-  $(document).ready(function() {
+  $(document).ready(function () {
 
     $('#fecha').daterangepicker({
       singleDatePicker: true,
@@ -139,27 +134,26 @@
       showDropdowns: true
     });
 
-    $('#agrupador').val('<%=@agrupador%>');
-
-    function fn_imprimir_orden_trabajo(){
+    function fn_imprimir_orden_trabajo() {
       $('#imprimir_orden_fecha').val($('#fecha').val());
       $('#imprimir_orden_agrupador').val($('#agrupador').val());
       $('#imprimir_orden').submit();
     }
 
-    function fn_imprimir_lista_pedidos(){
-
-      if($('#agrupador').val()==""){
-       alert("Seleccione el Agrupador");
+    function fn_imprimir_lista_pedidos() {
+      var agrupador = $('#agrupador').val();
+      if (agrupador == "") {
+        alert("Seleccione el Agrupador");
         return false;
       }
 
       $('#imprimir_pedidos_fecha').val($('#fecha').val());
-      $('#imprimir_pedidos_agrupador').val($('#agrupador').val());
+      $('#imprimir_pedidos_agrupador').val(agrupador);
       $('#imprimir_pedidos').submit();
     }
 
-    $('#imprimir_pedidos_btn').click(fn_imprimir_lista_pedidos  );
+    $('#agrupador').val('<%=@agrupador%>');
+    $('#imprimir_pedidos_btn').click(fn_imprimir_lista_pedidos);
     $('#imprimir_orden_btn').click(fn_imprimir_orden_trabajo);
 
   });

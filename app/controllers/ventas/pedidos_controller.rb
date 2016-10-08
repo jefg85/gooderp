@@ -1,18 +1,37 @@
 class Ventas::PedidosController < PrivateController
-  before_action :set_ventas_pedido, only: [:show, :edit, :update, :destroy]
-  before_action :set_ventas_pedidos_catalogos, only: [:new, :create, :edit, :update, :destroy]
-  before_action :set_ventas_pedidos_catalogos_show_edit, only: [:show, :edit]
+  before_action :set_ventas_pedido, only: [:show, :update, :destroy]
+  before_action :set_ventas_pedidos_catalogos, only: [:new, :create, :update, :destroy]
+  before_action :set_ventas_pedidos_catalogos_show_edit, only: [:show]
 
   # GET /ventas/pedidos
   # GET /ventas/pedidos.json
   def index
     @fecha = params[:fecha].blank? ? Date.today : params[:fecha]
     @agrupador = params[:agrupador]
-    if @agrupador.blank?
-      @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente}).where('pedidos.fecha = ?', @fecha)
-    else
-      @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre, clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins({:rel_cliente => :rel_agrupador_cliente}).where('pedidos.fecha = ? and clientes.agrupador_cliente_id =?', @fecha, @agrupador)
+    @cantidad_plato_principal = 0
+    @cantidad_extras = 0
+
+    @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre,
+                                             clientes.segundo_nombre, agrupador_clientes.nombre as grupo, pedidos.created_at')
+                                    .joins({:rel_cliente => :rel_agrupador_cliente})
+                                    .where('pedidos.fecha = ?', @fecha)
+                                    .order('pedidos.created_at desc')
+    @ventas_pedidos = @ventas_pedidos.where('clientes.agrupador_cliente_id =?', @agrupador) unless @agrupador.blank?
+
+
+    totales = Ventas::Pedido.select('productos.categoria_producto_id')
+                          .joins({:rel_pedido_detalle => :rel_producto},{:rel_cliente => :rel_agrupador_cliente})
+                          .where('pedidos.fecha = ?', @fecha)
+                          .order('pedidos.created_at desc')
+    totales = totales.where('clientes.agrupador_cliente_id =?', @agrupador) unless @agrupador.blank?
+
+
+
+    totales.each do |p|
+      @cantidad_plato_principal = @cantidad_plato_principal + 1 if p.categoria_producto_id == 1
+      @cantidad_extras = @cantidad_extras + 1 if p.categoria_producto_id == 2
     end
+
     @agrupador_cliente = Ventas::AgrupadorCliente.select('*').order('nombre')
   end
 

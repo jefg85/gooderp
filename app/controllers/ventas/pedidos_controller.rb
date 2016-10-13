@@ -115,7 +115,10 @@ class Ventas::PedidosController < PrivateController
 
   def rpt_orden_trabajo
    @fecha = params[:imprimir_orden_fecha]
-   @productos = Ventas::Pedido.select('productos.nombre as nombre_producto,sum(pedido_detalles.cantidad) as cantidad_pedidos').joins({:rel_pedido_detalle => :rel_producto}).where('pedidos.fecha = ?', @fecha).group('productos.nombre').order('productos.nombre')
+   @productos = Ventas::Pedido.select('productos.nombre as nombre_producto,sum(pedido_detalles.cantidad) as cantidad_pedidos')
+                              .joins({:rel_pedido_detalle => :rel_producto}).where('pedidos.fecha = ?', @fecha)
+                              .group('productos.categoria_producto_id,productos.nombre')
+                              .order('productos.categoria_producto_id,productos.nombre')
    render layout: false
   end
 

@@ -19,7 +19,7 @@ class Ventas::PedidosController < PrivateController
     @ventas_pedidos = @ventas_pedidos.where('clientes.agrupador_cliente_id =?', @agrupador) unless @agrupador.blank?
 
 
-    totales = Ventas::Pedido.select('productos.categoria_producto_id')
+    totales = Ventas::Pedido.select('productos.categoria_producto_id, pedido_detalles.cantidad as cantidad')
                           .joins({:rel_pedido_detalle => :rel_producto},{:rel_cliente => :rel_agrupador_cliente})
                           .where('pedidos.fecha = ?', @fecha)
                           .order('pedidos.created_at desc')
@@ -28,8 +28,8 @@ class Ventas::PedidosController < PrivateController
 
 
     totales.each do |p|
-      @cantidad_plato_principal = @cantidad_plato_principal + 1 if p.categoria_producto_id == 1
-      @cantidad_extras = @cantidad_extras + 1 if p.categoria_producto_id == 2
+      @cantidad_plato_principal = @cantidad_plato_principal + p.cantidad if p.categoria_producto_id == 1
+      @cantidad_extras = @cantidad_extras + p.cantidad if p.categoria_producto_id == 2
     end
 
     @agrupador_cliente = Ventas::AgrupadorCliente.select('*').order('nombre')

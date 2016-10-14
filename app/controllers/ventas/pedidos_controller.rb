@@ -7,6 +7,7 @@ class Ventas::PedidosController < PrivateController
   # GET /ventas/pedidos.json
   def index
     @fecha = params[:fecha].blank? ? Date.today : params[:fecha]
+    @buscar = params[:buscar].to_s
     @agrupador = params[:agrupador]
     @cantidad_plato_principal = 0
     @cantidad_extras = 0
@@ -17,6 +18,8 @@ class Ventas::PedidosController < PrivateController
                                     .where('pedidos.fecha = ?', @fecha)
                                     .order('pedidos.created_at desc')
     @ventas_pedidos = @ventas_pedidos.where('clientes.agrupador_cliente_id =?', @agrupador) unless @agrupador.blank?
+    @ventas_pedidos = @ventas_pedidos.where('concat_ws(primer_apellido, segundo_apellido, primer_nombre, segundo_nombre) ilike ?',
+                                            '%' + @buscar + '%') unless @buscar.blank?
 
 
     totales = Ventas::Pedido.select('productos.categoria_producto_id, pedido_detalles.cantidad as cantidad')

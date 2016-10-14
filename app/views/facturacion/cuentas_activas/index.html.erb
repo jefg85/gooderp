@@ -16,27 +16,23 @@
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
           <div class="x_title">
+
+
             <div class="row">
-              <div class="col-md-7 col-sm-7 col-xs-7">
-                <form id="form_buscar" action="/facturacion/consulta_pedidos/index" class="form-horizontal form-label-left">
-                  <div class="row">
-                    <div class="col-md-3 col-sm-3 col-xs-3">
-                      <%= select_tag 'agrupador', options_for_select(@agrupador_cliente.collect {|a| [ a[:nombre], a[:id] ] }),{ include_blank: true, class: 'form-control' } %>
-                    </div>
-                    <div class="col-md-3 col-sm-3 col-xs-3">
-                      <input type="submit" value="Buscar" class="btn btn-primary"/>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="col-md-5 col-sm-5 col-xs-5">
-                <div class="row">
-                  <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="pull-right">
-                    </div>
-                  </div>
+              <form id="form_buscar" action="/facturacion/cuentas_activas/index" class="form-horizontal form-label-left">
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                  <input placeholder="Nombre Cliente ..." type="text" name="buscar" id="buscar" class="form-control col-md-7 col-xs-12"
+                         value="<%=@buscar%>"/>
                 </div>
-              </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                  <%= select_tag 'agrupador', options_for_select(@agrupador_cliente.collect {|a| [ a[:nombre], a[:id] ] }),{ include_blank: true, class: 'form-control' } %>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                  <input type="submit" value="Buscar" class="btn btn-primary"/>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                </div>
+              </form>
             </div>
             <div class="clearfix"></div>
           </div>
@@ -80,3 +76,8 @@
     </div>
   </div>
 </div>
+<script>
+  $(document).ready(function() {
+    $('#agrupador').val('<%=@agrupador_id%>');
+  });
+</script>

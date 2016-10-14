@@ -1,8 +1,16 @@
 class Facturacion::CuentasActivasController < PrivateController
   def index
+    @agrupador_id = params[:agrupador]
+    @buscar = params[:buscar].to_s
     @cuentas = Facturacion::Cuentum.joins(:rel_cliente,{:rel_cuenta_detalle=>{:rel_pedido=>:rel_pedido_detalle}})
-                                   .select('cuenta.id,concat_ws(\' \',primer_apellido, segundo_apellido, primer_nombre, segundo_nombre) as nombre_cliente,count(distinct cuenta_detalles.id) as cantidad_pedido,sum(pedido_detalles.precio*pedido_detalles.cantidad) as monto_cuenta')
-                                   .where('cuenta.situacion = 0').group('cuenta.id,concat_ws(\' \',primer_apellido, segundo_apellido, primer_nombre, segundo_nombre)')
+                                   .select('clientes.agrupador_cliente_id, cuenta.id,concat_ws(\' \',primer_apellido, segundo_apellido,
+                                           primer_nombre, segundo_nombre) as nombre_cliente,count(distinct cuenta_detalles.id) as cantidad_pedido,sum
+                                           (pedido_detalles.precio*pedido_detalles.cantidad) as monto_cuenta')
+                                   .where('cuenta.situacion = 0').group('clientes.agrupador_cliente_id, cuenta.id,concat_ws(\' \',primer_apellido,
+                                                                         segundo_apellido, primer_nombre, segundo_nombre)')
+    @cuentas = @cuentas.where('clientes.agrupador_cliente_id=?', @agrupador_id) unless @agrupador_id.blank?
+    @cuentas = @cuentas.where('concat_ws(primer_apellido, segundo_apellido, primer_nombre, segundo_nombre) ilike ?',
+                              '%' + @buscar + '%') unless @buscar.blank?
     @monto_total = 0.0
     @cuentas.each{|c| @monto_total = @monto_total + c.monto_cuenta}
     @agrupador_cliente = Ventas::AgrupadorCliente.select('*').order('nombre')

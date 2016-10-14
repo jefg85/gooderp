@@ -122,7 +122,7 @@ ActiveRecord::Schema.define(version: 20161001090118) do
     t.date     'fecha_nacimiento',                null: false
     t.datetime 'created_at',                      null: false
     t.datetime 'updated_at',                      null: false
-    t.integer  'agrupador_cliente_id'
+    t.integer  'agrupador_cliente_id',            null: false
   end
 
   create_table 'ventas_menu_detalles', force: :cascade do |t|

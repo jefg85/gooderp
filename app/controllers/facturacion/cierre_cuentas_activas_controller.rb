@@ -34,8 +34,8 @@ class Facturacion::CierreCuentasActivasController < PrivateController
     agrupador_id = params[:agrupador]
     fecha = params[:fecha]
     cuentas = Facturacion::Cuentum.joins(:rel_cliente).select('*').where('cuenta.situacion = 0 and clientes.agrupador_cliente_id=?',agrupador_id)
-    #cuentas.update_attributes(fecha: @fecha, situacion: 1)
-    redirect_to '/facturacion/cierre_cuentas_activas/index', notice: 'Cuentas cerradas con exito!'
+    cuentas.update_all(fecha_fin: fecha, situacion: 1)
+    redirect_to '/facturacion/cierre_cuentas_activas/index?agrupador=' + agrupador_id, notice: 'Cuentas cerradas con exito!'
   end
 
   private

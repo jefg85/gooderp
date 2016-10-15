@@ -83,7 +83,8 @@ class Ventas::ClientesController < PrivateController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ventas_cliente_params
-      params.require(:ventas_cliente).permit(:primer_nombre, :segundo_nombre, :primer_apellido, :segundo_apellido, :sexo, :cedula, :fecha_nacimiento, :agrupador_cliente_id, :email)
+      params.require(:ventas_cliente).permit(:primer_nombre, :segundo_nombre, :primer_apellido, :segundo_apellido, :sexo, :cedula, :fecha_nacimiento,
+                                             :agrupador_cliente_id, :email, :piso)
     end
 
   def autorizacion!

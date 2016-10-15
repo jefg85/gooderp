@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(version: 20161001090118) do
     t.datetime 'created_at',                      null: false
     t.datetime 'updated_at',                      null: false
     t.integer  'agrupador_cliente_id',            null: false
+    t.integer  'piso',              default: 0,   null: false
   end
 
   create_table 'ventas_menu_detalles', force: :cascade do |t|

@@ -13,7 +13,7 @@ class Ventas::PedidosController < PrivateController
     @cantidad_extras = 0
 
     @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre,
-                                             clientes.segundo_nombre, agrupador_clientes.nombre as grupo, pedidos.created_at')
+                                             clientes.segundo_nombre, agrupador_clientes.nombre as grupo, pedidos.created_at, clientes.piso')
                                     .joins({:rel_cliente => :rel_agrupador_cliente})
                                     .where('pedidos.fecha = ?', @fecha)
                                     .order('pedidos.created_at desc')

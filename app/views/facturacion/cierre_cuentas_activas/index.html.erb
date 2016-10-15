@@ -1,0 +1,122 @@
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Cierre de Cuentas Activas (<%= @cuentas.length %>)</h3>
+      </div>
+      <div class="title_right">
+        <div class="pull-right">
+          <h3>Total: (<%= @monto_total %>)</h3>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+
+
+            <div class="row">
+              <form id="form_buscar" action="/facturacion/cierre_cuentas_activas/index" class="form-horizontal form-label-left">
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                  <input placeholder="Nombre Cliente ..." type="text" name="buscar" id="buscar" class="form-control col-md-7 col-xs-12"
+                         value="<%=@buscar%>"/>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                  <%= select_tag 'agrupador', options_for_select(@agrupador_cliente.collect {|a| [ a[:nombre], a[:id] ] }),
+                                 { include_blank: true, class: 'form-control agrupador' } %>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                  <input type="submit" value="Buscar" class="btn btn-primary"/>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                </div>
+              </form>
+            </div>
+            <div class="row">
+                <%= form_tag('/facturacion/cierre_cuentas_activas/cerrar_cuentas', method: 'post', id: 'frm_cerrar_cuenta')do %>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                  <input type="text" name="fecha" id="fecha" readonly="readonly" class="form-control col-md-7 col-xs-12" />
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                  <%= select_tag 'agrupador', options_for_select(@agrupador_cliente.collect {|a| [ a[:nombre], a[:id] ] },
+                                                                 {id: 'frm_cerrar_cuenta_agrupador'}),
+                                                                 { include_blank: true, class: 'form-control agrupador' } %>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                  <button id="btn_cerrar_cuenta" class="btn btn-warning">Cerrar Cuentas</button>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                </div>
+                <% end %>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content" style="display: block;">
+            <table id="cuentas" class="table table-striped table-hover">
+              <thead>
+              <tr>
+                <th style="width: 70%">Cliente</th>
+                <th style="width: 15%">Cantidad de Pedidos</th>
+                <th style="width: 15%">Total</th>
+                <th style="width: 15%">Imprimir</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @cuentas.each do |c| %>
+                  <tr>
+                    <td>
+                      <a href="/facturacion/cierre_cuentas_activas/detalle?id=<%=c.id%>">
+                      <%= c.nombre_cliente  %>
+                      </a>
+                    </td>
+                    <td>
+                      <%= c.cantidad_pedido  %>
+                    </td>
+                    <td>
+                      <%= c.monto_cuenta  %>
+                    </td>
+                    <td>
+                      <%= form_tag('/facturacion/cierre_cuentas_activas/imprimir_cuenta', target: '_blank', method: 'post', id: 'frm_imprimir_cuenta')do %>
+                          <input type="hidden" name="id" value="<%=c.id%>"/>
+                          <input type="submit" value="Imprimir" class="btn btn-primary"/>
+                      <% end %>
+                    </td>
+                  </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    $('.agrupador').val('<%=@agrupador_id%>');
+
+    $('#fecha').daterangepicker({
+      singleDatePicker: true,
+      calender_style: "picker_4",
+      format: 'YYYY-MM-DD',
+      showDropdowns: true,
+      maxDate: '<%= Date.today %>'
+    });
+
+    $('#btn_cerrar_cuenta').click(function(){
+      if($('#fecha').val()==''){
+        alert('Seleccione una fecha');
+        return false;
+      }
+      if($('#frm_cerrar_cuenta_agrupador').val()==''){
+        alert('Seleccione un agruapdaro');
+        return false;
+      }
+      $('#frm_cerrar_cuenta').submit();
+    });
+
+  });
+</script>

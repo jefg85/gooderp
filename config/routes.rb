@@ -14,6 +14,11 @@ Rails.application.routes.draw do
 
     get 'cuentas_por_cliente/detalle'
     get 'cuentas_por_cliente/index'
+
+    get 'cierre_cuentas_activas/detalle'
+    get 'cierre_cuentas_activas/index'
+    post 'cierre_cuentas_activas/imprimir_cuenta'
+    post 'cierre_cuentas_activas/cerrar_cuentas'
   end
 
   namespace :ventas do

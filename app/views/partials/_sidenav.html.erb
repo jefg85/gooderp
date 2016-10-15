@@ -65,6 +65,20 @@
                 <ul class="nav child_menu" style="display: none">
                   <li>
                     <a>
+                      Cuentas
+                      <span class="fa fa-chevron-down"></span>
+                    </a>
+                    <ul class="nav child_menu" style="display: none">
+                      <% if policy(:controller_facturacion_cuentas_activas).index? %>
+                          <li><a href="/facturacion/cuentas_activas/index">Cuentas Activas</a></li>
+                      <% end %>
+                      <% if policy(:controller_facturacion_cierre_cuentas_activas).index? %>
+                          <li><a href="/facturacion/cierre_cuentas_activas/index">Cierre Cuentas Activas</a></li>
+                      <% end %>
+                    </ul>
+                  </li>
+                  <li>
+                    <a>
                       Consultas
                       <span class="fa fa-chevron-down"></span>
                     </a>
@@ -74,9 +88,6 @@
                       <% end %>
                       <% if policy(:controller_facturacion_pedidos_fecha).index? %>
                           <li><a href="/facturacion/pedidos_fecha/index">Pedidos por fecha</a></li>
-                      <% end %>
-                      <% if policy(:controller_facturacion_cuentas_activas).index? %>
-                          <li><a href="/facturacion/cuentas_activas/index">Cuentas Activas</a></li>
                       <% end %>
                     </ul>
                   </li>

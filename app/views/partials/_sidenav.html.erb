@@ -65,6 +65,17 @@
                 <ul class="nav child_menu" style="display: none">
                   <li>
                     <a>
+                      Facturación
+                      <span class="fa fa-chevron-down"></span>
+                    </a>
+                    <ul class="nav child_menu" style="display: none">
+                      <% if policy(:controller_facturacion_pedidos).index? %>
+                          <li><a href="/facturacion/facturacion_cuentas/index">Cuentas</a></li>
+                      <% end %>
+                    </ul>
+                  </li>
+                  <li>
+                    <a>
                       Cuentas
                       <span class="fa fa-chevron-down"></span>
                     </a>

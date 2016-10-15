@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20161001090118) do
   add_index 'versions', ['item_type', 'item_id'], name: 'index_versions_on_item_type_and_item_id', using: :btree
 
 
-  create_table 'facturacion_cuenta', force: :cascade do |t|
+  create_table 'facturacion_cuentas', force: :cascade do |t|
     t.integer  'cliente_id',               null: false
     t.date     'fecha_inicio',             null: false
     t.date     'fecha_fin'

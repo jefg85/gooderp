@@ -1,0 +1,120 @@
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Cuenta #(<%= @cuenta_id %>)</h3>
+        <h1></h1>
+      </div>
+      <div class="title_right">
+        <div class="pull-right">
+          <a href="/facturacion/cuentas_activas/index" class="btn btn-primary">Regresar</a>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Datos de cuenta</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content" style="display: block;">
+            <div class="row">
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <b>Fecha Inicio</b>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <%= @cuenta.fecha_inicio %>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <b>Fecha Fin</b>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <%= @cuenta.fecha_fin %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <b>Cliente</b>
+              </div>
+              <div class="col-md-9 col-sm-9 col-xs-9">
+                <%= @cliente.nombre_completo %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <b>Cantidad de pedidos</b>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <%= @cuenta.cantidad_pedidos %>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <b>Monto total</b>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <%= @cuenta.monto_total %>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Detalle</h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content" style="display: block;">
+            <table id="pedidos" class="table table-striped table-hover">
+              <thead>
+              <tr>
+                <th style="width: 15%">Fecha</th>
+                <th style="width: 70%">Cliente/Pedido</th>
+                <th style="width: 15%">Total</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @pedidos.each do |p| %>
+                  <tr>
+                    <td><%= p.fecha  %></td>
+                    <td>
+                      <b>
+                        <%= p.grupo  %> /
+                        <%= p.email %> /
+                        <%= p.primer_apellido %> <%= p.segundo_apellido %> <%= p.primer_nombre %> <%= p.segundo_nombre %>
+                      </b>
+                      <table style="margin-left: 10px">
+                        <% p.rel_pedido_detalle.each do |pd| %>
+                            <tr>
+                              <td><%= pd.rel_producto.nombre %></td>
+                              <td style="padding-left: 10px"><%= pd.precio %></td>
+                              <td style="padding-left: 10px"><%= pd.cantidad %></td>
+                              <td style="padding-left: 10px"><%= pd.precio * pd.cantidad %></td>
+                            </tr>
+                        <% end %>
+                      </table>
+                    </td>
+                    <td>
+                      <%=
+                        total = 0.0
+                        p.rel_pedido_detalle.each do |pd|
+                          total = total + pd.cantidad * pd.precio
+                        end
+                        total
+                      %>
+                    </td>
+                  </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

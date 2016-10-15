@@ -19,6 +19,10 @@ Rails.application.routes.draw do
     get 'cierre_cuentas_activas/index'
     post 'cierre_cuentas_activas/imprimir_cuenta'
     post 'cierre_cuentas_activas/cerrar_cuentas'
+
+    get 'facturacion_cuentas/detalle'
+    get 'facturacion_cuentas/index'
+    post 'facturacion_cuentas/facturar'
   end
 
   namespace :ventas do

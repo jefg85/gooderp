@@ -41,6 +41,9 @@
               <% if policy(:controller_ventas_clientes).index? %>
                   <li><a href="/ventas/clientes">Clientes</a></li>
               <% end %>
+              <% if policy(:controller_ventas_agrupador_clientes).index? %>
+                  <li><a href="/ventas/agrupador_clientes">Agrupador Clientes</a></li>
+              <% end %>
             </ul>
           </li>
           <!-- /VENTAS -->

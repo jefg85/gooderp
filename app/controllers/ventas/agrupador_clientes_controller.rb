@@ -4,7 +4,9 @@ class Ventas::AgrupadorClientesController < PrivateController
   # GET /ventas/agrupador_clientes
   # GET /ventas/agrupador_clientes.json
   def index
-    @ventas_agrupador_clientes = Ventas::AgrupadorCliente.all
+    @buscar = params[:buscar].to_s
+    @ventas_agrupador_clientes = Ventas::AgrupadorCliente.select('*').order('nombre')
+    @ventas_agrupador_clientes = @ventas_agrupador_clientes.where('nombre ilike ?', '%' + @buscar + '%') unless @buscar.blank?
   end
 
   # GET /ventas/agrupador_clientes/1

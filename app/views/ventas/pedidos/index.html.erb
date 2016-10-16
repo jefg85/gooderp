@@ -82,13 +82,7 @@
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <% ventas_pedido.rel_pedido_detalle.each do |pd| %>
                         <div class="row <%= pd.observacion.nil? ? '' : 'bg-info' %>">
-                          <div class="col-md-2 col-sm-1 col-xs-1">
-                            <%= form_tag '/ventas/pedidos/rpt_etiqueta_individual', {target: '_blank', method: 'post'} do %>
-                                <input type="hidden" name="id" value="<%= pd.id %>"/>
-                                <input type="submit" value="Etiqueta" class="btn btn-info form-control"/>
-                            <% end %>
-                          </div>
-                          <div class="col-md-7 col-sm-6 col-xs-6">
+                          <div class="col-md-7 col-sm-7 col-xs-7  ">
                             <%= pd.rel_producto.nombre %>
                             <% unless pd.rel_producto_complemento.nil? %>
                                 &nbsp;CON&nbsp; <%= pd.rel_producto_complemento.nombre %>

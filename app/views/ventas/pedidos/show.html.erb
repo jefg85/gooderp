@@ -130,7 +130,11 @@
                 <% @ventas_pedido.rel_pedido_detalle.each do |detalle| %>
                     <tr>
                       <td><%= detalle.rel_producto.nombre %> </td>
-                      <td><%= detalle.rel_producto_complemento.nombre %> </td>
+                      <td>
+                        <% unless detalle.rel_producto_complemento.nil? %>
+                          <%= detalle.rel_producto_complemento.nombre %>
+                        <% end %>
+                      </td>
                       <td><%= detalle.precio %> </td>
                       <td><%= detalle.cantidad %> </td>
                       <td><%= detalle.precio * detalle.cantidad %> </td>

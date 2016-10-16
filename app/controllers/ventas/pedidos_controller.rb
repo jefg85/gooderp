@@ -123,6 +123,13 @@ class Ventas::PedidosController < PrivateController
    send_data server.ejecutar_reporte, type: server.obtener_content_type, filename: server.obtener_nombre, disposition: 'inline'
   end
 
+  def rpt_etiqueta_individual
+    id = params[:id]
+    server = Utils::Jasperserver.new('GE_VT003', :PDF)
+    server.agregar_parametro('id',id)
+    send_data server.ejecutar_reporte, type: server.obtener_content_type, filename: server.obtener_nombre, disposition: 'inline'
+  end
+
   def credito
     fecha = params[:fecha].blank? ? Date.today : params[:fecha]
     agrupador = params[:agrupador]

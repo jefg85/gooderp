@@ -25,9 +25,11 @@ class Facturacion::CuentasActivasController < PrivateController
 
   def imprimir_cuenta
     cuenta_id = params[:id].to_i
+    cuenta = Facturacion::Cuentum.find(cuenta_id)
+    cliente = cuenta.rel_cliente
     server = Utils::Jasperserver.new('GE_FT001', :PDF)
     server.agregar_parametro('cuenta_id',cuenta_id)
-    send_data server.ejecutar_reporte, type: server.obtener_content_type, filename: server.obtener_nombre, disposition: 'inline'
+    send_data server.ejecutar_reporte, type: server.obtener_content_type, filename: cliente.primer_nombre_primer_apellido_email, disposition: 'inline'
   end
 
   private

@@ -27,10 +27,11 @@
                 <div class="col-md-3 col-sm-3 col-xs-3">
                   <%= select_tag 'agrupador', options_for_select(@agrupador_cliente.collect {|a| [ a[:nombre], a[:id] ] }),{ include_blank: true, class: 'form-control' } %>
                 </div>
-                <div class="col-md-3 col-sm-3 col-xs-3">
-                  <input type="submit" value="Buscar" class="btn btn-primary"/>
+                <div class="col-md-2 col-sm-3 col-xs-3">
+                  <input type="submit" value="Buscar" class="btn btn-primary form-control"/>
                 </div>
-                <div class="col-md-3 col-sm-3 col-xs-3">
+                <div class="col-md-offset-2 col-md-2 col-sm-3 col-xs-3">
+                  <button class="btn btn-primary form-control" onclick="$('#frm_imprimir_cuenta').submit();">Imprimir</button>
                 </div>
               </form>
             </div>

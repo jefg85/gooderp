@@ -15,4 +15,13 @@ class Ventas::Cliente < ActiveRecord::Base
 		nombre_completo
 	end
 
+	def primer_nombre_primer_apellido_email
+		nombre_completo = self.primer_nombre
+		nombre_completo << '_'
+		nombre_completo << self.primer_apellido
+		nombre_completo << '_'
+		nombre_completo << self.email
+		nombre_completo.upcase
+	end
+
 end

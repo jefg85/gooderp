@@ -29,7 +29,8 @@ class Facturacion::CuentasActivasController < PrivateController
     cliente = cuenta.rel_cliente
     server = Utils::Jasperserver.new('GE_FT001', :PDF)
     server.agregar_parametro('cuenta_id',cuenta_id)
-    send_data server.ejecutar_reporte, type: server.obtener_content_type, filename: cliente.primer_nombre_primer_apellido_email, disposition: 'inline'
+    send_data server.ejecutar_reporte, type: server.obtener_content_type, filename: cliente.primer_nombre_primer_apellido_email + '.pdf',
+              disposition: 'inline'
   end
 
   private

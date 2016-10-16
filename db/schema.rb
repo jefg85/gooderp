@@ -140,12 +140,14 @@ ActiveRecord::Schema.define(version: 20161001090118) do
   end
 
   create_table 'ventas_pedido_detalles', force: :cascade do |t|
-    t.integer  'pedido_id'
-    t.integer  'producto_id'
-    t.integer  'cantidad'
-    t.float    'precio'
+    t.integer  'pedido_id',   null: false
+    t.integer  'producto_id', null: false
+    t.integer  'producto_complemento_id'
+    t.integer  'cantidad',    null: false
+    t.float    'precio',      null: false
     t.datetime 'created_at',  null: false
     t.datetime 'updated_at',  null: false
+    t.string   'observacion', limit: 1000
   end
 
   create_table 'ventas_pedidos', force: :cascade do |t|

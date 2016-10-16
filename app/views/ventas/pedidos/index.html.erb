@@ -11,45 +11,44 @@
     <div class="x_panel">
       <div class="x_title">
         <div class="row">
-            <div class="col-md-offset-8 col-md-2 col-sm-4 col-xs-12">
-                <%= form_tag '/ventas/pedidos/rpt_orden_trabajo', {id: 'imprimir_orden', target: '_blank', method: 'post'} do %>
-                    <input type="hidden" name="imprimir_orden_fecha" id="imprimir_orden_fecha"/>
-                    <input type="hidden" name="imprimir_orden_agrupador" id="imprimir_orden_agrupador"/>
-                    <button id="imprimir_orden_btn" class="btn btn-info form-control">Orden de trabajo</button>
-                <% end %>
-              </div>
-            <div class="col-md-2 col-sm-4 col-xs-12">
-                <%= form_tag '/ventas/pedidos/rpt_lista_pedidos', {id: 'imprimir_pedidos', target: '_blank', method: 'post'} do %>
-                    <input type="hidden" name="imprimir_pedidos_fecha" id="imprimir_pedidos_fecha"/>
-                    <input type="hidden" name="imprimir_pedidos_agrupador" id="imprimir_pedidos_agrupador"/>
-                    <button id="imprimir_pedidos_btn" class="btn btn-info form-control">Imprimir Pedidos</button>
-                <% end %>
-            </div>
+          <div class="col-md-offset-8 col-md-2 col-sm-4 col-xs-12">
+            <%= form_tag '/ventas/pedidos/rpt_orden_trabajo', {id: 'imprimir_orden', target: '_blank', method: 'post'} do %>
+                <input type="hidden" name="imprimir_orden_fecha" id="imprimir_orden_fecha"/>
+                <button id="imprimir_orden_btn" class="btn btn-info form-control">Orden de trabajo</button>
+            <% end %>
+          </div>
+          <div class="col-md-2 col-sm-4 col-xs-12">
+            <%= form_tag '/ventas/pedidos/rpt_lista_pedidos', {id: 'imprimir_pedidos', target: '_blank', method: 'post'} do %>
+                <input type="hidden" name="imprimir_pedidos_fecha" id="imprimir_pedidos_fecha"/>
+                <input type="hidden" name="imprimir_pedidos_agrupador" id="imprimir_pedidos_agrupador"/>
+                <button id="imprimir_pedidos_btn" class="btn btn-info form-control">Imprimir Pedidos</button>
+            <% end %>
+          </div>
         </div>
         <div class="row">
-            <form id="form_buscar" action="/ventas/pedidos" class="form-horizontal form-label-left">
-              <div class="row">
-                <label for="fecha" class="control-label col-md-1 col-sm-1 col-xs-3">
-                  Fecha
-                </label>
-                <div class="col-md-2 col-sm-3 col-xs-9">
-                  <input type="text" readonly="readonly" name="fecha" id="fecha" class="form-control" value="<%= @fecha %>"/>
-                </div>
-                <div class="col-md-3 col-sm-4 col-xs-12">
-                  <input placeholder="Nombre Cliente..." type="text" name="buscar" id="buscar" class="form-control" value="<%=@buscar%>"/>
-                </div>
-                <div class="col-md-2 col-sm-4 col-xs-12">
-                  <%= select_tag 'agrupador', options_for_select(@agrupador_cliente.collect { |a| [a[:nombre], a[:id]] }), {include_blank: true, class: 'form-control'} %>
-                </div>
-                <div class="col-md-2 col-sm-4 col-xs-12">
-                  <input type="submit" value="Buscar" class="btn btn-primary form-control"/>
-                </div>
-                <div class="col-md-2 col-sm-4 col-xs-12">
-                   <%= link_to 'Nuevo', new_ventas_pedido_path, {class: 'btn btn-primary form-control'} %>
-                </div>
+          <form id="form_buscar" action="/ventas/pedidos" class="form-horizontal form-label-left">
+            <div class="row">
+              <label for="fecha" class="control-label col-md-1 col-sm-1 col-xs-3">
+                Fecha
+              </label>
+              <div class="col-md-2 col-sm-3 col-xs-9">
+                <input type="text" readonly="readonly" name="fecha" id="fecha" class="form-control" value="<%= @fecha %>"/>
               </div>
-            </form>
-          </div>
+              <div class="col-md-3 col-sm-4 col-xs-12">
+                <input placeholder="Nombre Cliente..." type="text" name="buscar" id="buscar" class="form-control" value="<%= @buscar %>"/>
+              </div>
+              <div class="col-md-2 col-sm-4 col-xs-12">
+                <%= select_tag 'agrupador', options_for_select(@agrupador_cliente.collect { |a| [a[:nombre], a[:id]] }), {include_blank: true, class: 'form-control'} %>
+              </div>
+              <div class="col-md-2 col-sm-4 col-xs-12">
+                <input type="submit" value="Buscar" class="btn btn-primary form-control"/>
+              </div>
+              <div class="col-md-2 col-sm-4 col-xs-12">
+                <%= link_to 'Nuevo', new_ventas_pedido_path, {class: 'btn btn-primary form-control'} %>
+              </div>
+            </div>
+          </form>
+        </div>
         <div class="clearfix"></div>
       </div>
       <div class="x_content" style="display: block;">
@@ -83,7 +82,15 @@
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <% ventas_pedido.rel_pedido_detalle.each do |pd| %>
                         <div class="row">
-                          <div class="col-md-7 col-sm-7 col-xs-7  "><%= pd.rel_producto.nombre %></div>
+                          <div class="col-md-7 col-sm-7 col-xs-7  ">
+                            <%= pd.rel_producto.nombre %>
+                            <% unless pd.rel_producto_complemento.nil? %>
+                                &nbsp;CON&nbsp; <%= pd.rel_producto_complemento.nombre %>
+                            <% end %>
+                            <% unless pd.observacion.nil? %>
+                                <br>&nbsp;(&nbsp;<%= pd.observacion %>&nbsp;)&nbsp;
+                            <% end %>
+                          </div>
                           <div class="col-md-1 col-sm-1 col-xs-2"><%= pd.precio %></div>
                           <div class="col-md-1 col-sm-1 col-xs-1"><%= pd.cantidad %></div>
                           <div class="col-md-1 col-sm-1 col-xs-2"><%= pd.precio * pd.cantidad %></div>
@@ -94,11 +101,11 @@
               </div>
               <div class="col-md-1 col-sm-1 col-xs-12">
                 <strong>
-                <%=
-                  total = 0.0
-                  ventas_pedido.rel_pedido_detalle.each { |pd| total = total + pd.cantidad * pd.precio }
-                  total
-                %>
+                  <%=
+                    total = 0.0
+                    ventas_pedido.rel_pedido_detalle.each { |pd| total = total + pd.cantidad * pd.precio }
+                    total
+                  %>
                 </strong>
               </div>
               <div class="col-md-2 col-sm-3 col-xs-12">
@@ -137,7 +144,6 @@
 
     function fn_imprimir_orden_trabajo() {
       $('#imprimir_orden_fecha').val($('#fecha').val());
-      $('#imprimir_orden_agrupador').val($('#agrupador').val());
       $('#imprimir_orden').submit();
     }
 

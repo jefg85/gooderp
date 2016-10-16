@@ -1,139 +1,167 @@
 <div class="form-horizontal form-label-left">
-    <div class="right_col" role="main">
-      <div class="">
-        <div class="page-title">
-          <div class="title_left">
-            <h3>Pedido #<%= @ventas_pedido.id %></h3>
-          </div>
-          <div class="title_right">
-            <div class="form-group pull-right">
-              <%= link_to 'Borrar', @ventas_pedido, method: :delete, data: { confirm: 'Seguro de eliminar?' }, class: 'btn btn-danger' %>
-              <%= link_to 'Lista de pedidos', ventas_pedidos_path, {class: 'btn btn-primary'} %>
-            </div>
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>Pedido #<%= @ventas_pedido.id %></h3>
+        </div>
+        <div class="title_right">
+          <div class="form-group pull-right">
+            <%= link_to 'Borrar', @ventas_pedido, method: :delete, data: {confirm: 'Seguro de eliminar?'}, class: 'btn btn-danger' %>
+            <%= link_to 'Lista de pedidos', ventas_pedidos_path, {class: 'btn btn-primary'} %>
           </div>
         </div>
-        <div class="clearfix"></div>
-        <div class="row">
-          <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
-              <div class="x_title">
-                <div class="clearfix"></div>
-              </div>
-              <div class="x_content" style="display: block;">
-
-                <div class="form-group">
-                  <label for="ventas_cliente_agrupador_cliente_id" class="control-label col-md-3 col-sm-3 col-xs-12">
-                    Fecha
-                    <span class="required">*</span>
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input disabled="disabled" type="text" value="<%= @ventas_pedido.fecha %>" class="form-control col-md-7 col-xs-12">
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label for="ventas_cliente_agrupador_cliente_id" class="control-label col-md-3 col-sm-3 col-xs-12">
-                    Cliente
-                    <span class="required">*</span>
-                  </label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <input disabled="disabled" type="text" value="<%= @cliente.email %> - <%= @cliente.nombre_completo %> " class="form-control col-md-7 col-xs-12">
-                  </div>
-                </div>
-              </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <div class="clearfix"></div>
             </div>
-          </div>
-        </div>
+            <div class="x_content" style="display: block;">
 
-        <div class="row">
-          <div class="col-md-12 col-sm-12 col-xs-12">
-            <%= form_for @detalle, {url: '/ventas/pedidos/crear_detalle'} do |f| %>
-            <div class="x_panel">
-              <div class="x_title">
-                <h2>Nuevo detalle</h2>
-                <div class="pull-right">
-                  <%= f.submit 'Guadar', {class: 'btn btn btn-success'} %>
+              <div class="form-group">
+                <label for="ventas_cliente_agrupador_cliente_id" class="control-label col-md-3 col-sm-3 col-xs-12">
+                  Fecha
+                  <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input disabled="disabled" type="text" value="<%= @ventas_pedido.fecha %>" class="form-control col-md-7 col-xs-12">
                 </div>
-                <div class="clearfix"></div>
               </div>
-              <div class="x_content" style="display: block;">
 
-
-                    <%= f.hidden_field :pedido_id %>
-
-                    <div class="form-group">
-                      <label for="ventas_cliente_agrupador_cliente_id" class="control-label col-md-3 col-sm-3 col-xs-12">
-                        Producto
-                        <span class="required">*</span>
-                      </label>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <%= f.collection_select(:producto_id, @productos, :id, :nombre_producto, {include_blank: true}, {class: 'form-control col-md-7 col-xs-12', required: 'required'}) %>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="ventas_cliente_agrupador_cliente_id" class="control-label col-md-3 col-sm-3 col-xs-12">
-                        Cantidad
-                        <span class="required">*</span>
-                      </label>
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <%= f.text_field :cantidad, {class: 'form-control col-md-7 col-xs-12', required: 'required'} %>
-                      </div>
-                    </div>
-
-              </div>
-            </div>
-            <% end %>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
-              <div class="x_title">
-                <h2>Detalle</h2>
-                <div class="clearfix"></div>
-              </div>
-              <div class="x_content">
-                <table id="pedidos" class="table table-striped table-hover">
-                  <thead>
-                  <tr>
-                    <th>Producto</th>
-                    <th>Precio</th>
-                    <th>Cantidad</th>
-                    <th>Total</th>
-                    <th>Acciones</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <% @ventas_pedido.rel_pedido_detalle.each do |detalle| %>
-                      <tr>
-                        <td><%= detalle.rel_producto.nombre %> </td>
-                        <td><%= detalle.precio %> </td>
-                        <td><%= detalle.cantidad %> </td>
-                        <td><%= detalle.precio * detalle.cantidad %> </td>
-                        <td>
-                          <%= form_for detalle, {url: '/ventas/pedidos/borrar_detalle', method: 'post'} do |f| %>
-                            <input type="hidden" name="id" value="<%= detalle.id %>"/>
-                            <input type="submit" value="Borrar" class="btn btn btn-danger"/>
-                          <% end %>
-                        </td>
-                      </tr>
-                  <% end %>
-                  </tbody>
-                </table>
-              </div>
+              <div class="form-group">
+                <label for="ventas_cliente_agrupador_cliente_id" class="control-label col-md-3 col-sm-3 col-xs-12">
+                  Cliente
+                  <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input disabled="disabled" type="text" value="<%= @cliente.email %> - <%= @cliente.nombre_completo %> " class="form-control col-md-7 col-xs-12">
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <%= form_for @detalle, {url: '/ventas/pedidos/crear_detalle'} do |f| %>
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Nuevo detalle</h2>
+                  <div class="pull-right">
+                    <%= f.submit 'Guadar', {class: 'btn btn btn-success'} %>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content" style="display: block;">
+
+
+                  <%= f.hidden_field :pedido_id %>
+
+                  <div class="form-group">
+                    <label for="ventas_pedidos_producto_id" class="control-label col-md-3 col-sm-3 col-xs-12">
+                      Producto
+                      <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <%= f.collection_select(:producto_id, @productos, :id, :nombre_producto, {include_blank: true}, {class: 'form-control col-md-7 col-xs-12', required: 'required'}) %>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="ventas_pedidos_producto_complemento_id" class="control-label col-md-3 col-sm-3 col-xs-12">
+                      Complemento
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <%= f.collection_select(:producto_complemento_id, @productos_complemento, :id, :nombre_producto, {include_blank: true},
+                                              {class: 'form-control col-md-7 col-xs-12'}) %>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="ventas_pedidos_cantidad" class="control-label col-md-3 col-sm-3 col-xs-12">
+                      Cantidad
+                      <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <%= f.text_field :cantidad, {class: 'form-control col-md-7 col-xs-12', required: 'required'} %>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="ventas_pedidos_observacion" class="control-label col-md-3 col-sm-3 col-xs-12">
+                      Observación
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <%= f.text_field :observacion, {class: 'form-control col-md-7 col-xs-12', required: 'required'} %>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Detalle</h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <table id="pedidos" class="table table-striped table-hover">
+                <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Complemento</th>
+                  <th>Precio</th>
+                  <th>Cantidad</th>
+                  <th>Total</th>
+                  <th>Observación</th>
+                  <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% @ventas_pedido.rel_pedido_detalle.each do |detalle| %>
+                    <tr>
+                      <td><%= detalle.rel_producto.nombre %> </td>
+                      <td><%= detalle.rel_producto_complemento.nombre %> </td>
+                      <td><%= detalle.precio %> </td>
+                      <td><%= detalle.cantidad %> </td>
+                      <td><%= detalle.precio * detalle.cantidad %> </td>
+                      <td><%= detalle.observacion %> </td>
+                      <td>
+                        <%= form_for detalle, {url: '/ventas/pedidos/borrar_detalle', method: 'post'} do |f| %>
+                            <input type="hidden" name="id" value="<%= detalle.id %>"/>
+                            <input type="submit" value="Borrar" class="btn btn btn-danger"/>
+                        <% end %>
+                      </td>
+                    </tr>
+                <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</div>
 </div>
 <script>
-  $(document).ready(function() {
+  $(document).ready(function () {
 
     $("#ventas_pedido_detalle_producto_id").select2({
+      placeholder: "Seleccione un producto",
+      allowClear: true
+    });
+
+    $("#ventas_pedido_detalle_producto_complemento_id").select2({
       placeholder: "Seleccione un producto",
       allowClear: true
     });

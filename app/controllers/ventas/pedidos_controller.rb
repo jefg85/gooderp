@@ -117,12 +117,10 @@ class Ventas::PedidosController < PrivateController
   end
 
   def rpt_orden_trabajo
-   @fecha = params[:imprimir_orden_fecha]
-   @productos = Ventas::Pedido.select('productos.nombre as nombre_producto,sum(pedido_detalles.cantidad) as cantidad_pedidos')
-                              .joins({:rel_pedido_detalle => :rel_producto}).where('pedidos.fecha = ?', @fecha)
-                              .group('productos.categoria_producto_id,productos.nombre')
-                              .order('productos.categoria_producto_id,productos.nombre')
-   render layout: false
+   fecha = params[:imprimir_orden_fecha]
+   server = Utils::Jasperserver.new('GE_VT002', :PDF)
+   server.agregar_parametro('fecha',fecha)
+   send_data server.ejecutar_reporte, type: server.obtener_content_type, filename: server.obtener_nombre, disposition: 'inline'
   end
 
   def credito
@@ -182,11 +180,14 @@ class Ventas::PedidosController < PrivateController
       @detalle = Ventas::PedidoDetalle.new
       @detalle.cantidad = 1
       @detalle.pedido_id = @ventas_pedido.id
-      @productos = Inventario::Producto.select("id,concat_ws(' ','( ',precio,' ) - ', nombre) as nombre_producto").order('nombre')
+      @productos = Inventario::Producto.select("id,concat_ws(' ','( ',precio,' ) - ', nombre) as nombre_producto")
+                                       .where('categoria_producto_id in (1,2)').order('nombre')
+      @productos_complemento = Inventario::Producto.select("id,concat_ws(' ','( ',precio,' ) - ', nombre) as nombre_producto")
+                                                   .where('categoria_producto_id=3').order('nombre')
     end
 
     def ventas_pedido_detalle_params
-      params.require(:ventas_pedido_detalle).permit(:pedido_id, :producto_id, :cantidad, :precio)
+      params.require(:ventas_pedido_detalle).permit(:pedido_id, :producto_id, :producto_complemento_id, :cantidad, :precio, :observacion)
     end
 
     def autorizacion!

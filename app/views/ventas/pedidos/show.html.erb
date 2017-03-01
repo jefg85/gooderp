@@ -52,6 +52,7 @@
                 <div class="x_title">
                   <h2>Nuevo detalle</h2>
                   <div class="pull-right">
+                    <button id="ir_nuevo_pedido" class="btn btn btn-success">Guadar y Nuevo Pedido</button>
                     <%= f.submit 'Guadar', {class: 'btn btn btn-success'} %>
                   </div>
                   <div class="clearfix"></div>
@@ -59,6 +60,7 @@
                 <div class="x_content" style="display: block;">
 
 
+                  <%= hidden_field_tag 'location', 0 %>
                   <%= f.hidden_field :pedido_id %>
 
                   <div class="form-group">
@@ -88,6 +90,15 @@
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                       <%= f.text_field :cantidad, {class: 'form-control col-md-7 col-xs-12', required: 'required'} %>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="ventas_pedidos_cantidad" class="control-label col-md-3 col-sm-3 col-xs-12">
+                      Precio
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                      <%= f.text_field :precio, {class: 'form-control col-md-7 col-xs-12'} %>
                     </div>
                   </div>
 
@@ -159,6 +170,13 @@
 </div>
 <script>
   $(document).ready(function () {
+
+    function fn_ir_nuevo_pedido(){
+      $('#location').val('1');
+      $('#new_ventas_pedido_detalle').submit();
+    }
+
+    $('#ir_nuevo_pedido').click(fn_ir_nuevo_pedido);
 
     $("#ventas_pedido_detalle_producto_id").select2({
       placeholder: "Seleccione un producto",

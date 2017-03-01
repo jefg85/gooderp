@@ -89,15 +89,20 @@ class Ventas::PedidosController < PrivateController
   end
 
   def crear_detalle
+    location = params[:location].to_i
     @ventas_pedido_detalle = Ventas::PedidoDetalle.new(ventas_pedido_detalle_params)
 
     @producto = Inventario::Producto.find(@ventas_pedido_detalle.producto_id)
 
-    @ventas_pedido_detalle.precio = @producto.precio
+    @ventas_pedido_detalle.precio = @producto.precio unless @ventas_pedido_detalle.precio.present?
     @ventas_pedido_detalle.save
 
     @ventas_pedido = Ventas::Pedido.find(@ventas_pedido_detalle.pedido_id)
-    redirect_to @ventas_pedido, notice: 'Detalle creado exitosamente!'
+    if location == 0
+      redirect_to @ventas_pedido, notice: 'Detalle creado exitosamente!'
+    else
+      redirect_to new_ventas_pedido_url, notice: 'Detalle creado exitosamente!' 
+    end
   end
 
   def borrar_detalle

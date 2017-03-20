@@ -81,5 +81,7 @@ group :development do
 
   # Static code analyzer, based on the community Ruby style guide
   gem 'rubocop', '~> 0.43.0', require: false
+  # An IRB alternative and runtime developer console 
+  gem 'pry'
 end
 

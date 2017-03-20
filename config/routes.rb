@@ -29,14 +29,15 @@ Rails.application.routes.draw do
     get 'venta_por_cliente/index'
     get 'venta_por_cliente/detalle'
 
-    resources :pedidos
     post 'pedidos/crear_detalle'
+    patch 'pedidos/crear_detalle'
     post 'pedidos/borrar_detalle'
     post 'pedidos/rpt_lista_pedidos'
     post 'pedidos/rpt_orden_trabajo'
     post 'pedidos/rpt_etiqueta_individual'
     post 'pedidos/credito'
     post 'pedidos/contado'
+    resources :pedidos
 
     resources :agrupador_clientes
     resources :clientes

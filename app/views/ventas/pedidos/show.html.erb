@@ -50,7 +50,7 @@
           <%= form_for @detalle, {url: '/ventas/pedidos/crear_detalle'} do |f| %>
               <div class="x_panel">
                 <div class="x_title">
-                  <h2>Nuevo detalle</h2>
+                  <h2><%= @detalle.new_record? ? 'Nuevo detalle' : ('Editar detalle #' + @detalle.id.to_s) %></h2>
                   <div class="pull-right">
                     <button id="ir_nuevo_pedido" class="btn btn btn-success">Guadar y Nuevo Pedido</button>
                     <%= f.submit 'Guadar', {class: 'btn btn btn-success'} %>
@@ -61,6 +61,7 @@
 
 
                   <%= hidden_field_tag 'location', 0 %>
+                  <%= f.hidden_field :id %>
                   <%= f.hidden_field :pedido_id %>
 
                   <div class="form-group">
@@ -134,7 +135,7 @@
                   <th>Cantidad</th>
                   <th>Total</th>
                   <th>Observación</th>
-                  <th>Acciones</th>
+                  <th colspan="2">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -150,6 +151,9 @@
                       <td><%= detalle.cantidad %> </td>
                       <td><%= detalle.precio * detalle.cantidad %> </td>
                       <td><%= detalle.observacion %> </td>
+                      <td>
+                      <a class="btn btn btn-primary" href="<%=('/ventas/pedidos/' + @ventas_pedido.id.to_s + '?detalle_id='+detalle.id.to_s)%>">Editar</a>
+                      </td>
                       <td>
                         <%= form_for detalle, {url: '/ventas/pedidos/borrar_detalle', method: 'post'} do |f| %>
                             <input type="hidden" name="id" value="<%= detalle.id %>"/>

@@ -90,18 +90,25 @@ class Ventas::PedidosController < PrivateController
 
   def crear_detalle
     location = params[:location].to_i
-    @ventas_pedido_detalle = Ventas::PedidoDetalle.new(ventas_pedido_detalle_params)
-
-    @producto = Inventario::Producto.find(@ventas_pedido_detalle.producto_id)
-
-    @ventas_pedido_detalle.precio = @producto.precio unless @ventas_pedido_detalle.precio.present?
+    @producto = Inventario::Producto.find(ventas_pedido_detalle_params[:producto_id])
+    @ventas_pedido_detalle = Ventas::PedidoDetalle.where(id: ventas_pedido_detalle_params[:id]).first_or_initialize
+    @ventas_pedido_detalle.pedido_id = ventas_pedido_detalle_params[:pedido_id]
+    @ventas_pedido_detalle.producto_id = ventas_pedido_detalle_params[:producto_id]
+    @ventas_pedido_detalle.cantidad = ventas_pedido_detalle_params[:cantidad]
+    if @ventas_pedido_detalle.new_record?
+      @ventas_pedido_detalle.precio = @producto.precio unless @ventas_pedido_detalle.precio.present?
+    else
+      @ventas_pedido_detalle.precio = ventas_pedido_detalle_params[:precio]
+    end
+    @ventas_pedido_detalle.producto_complemento_id = ventas_pedido_detalle_params[:producto_complemento_id]
+    @ventas_pedido_detalle.observacion = ventas_pedido_detalle_params[:observacion]
     @ventas_pedido_detalle.save
 
     @ventas_pedido = Ventas::Pedido.find(@ventas_pedido_detalle.pedido_id)
     if location == 0
-      redirect_to @ventas_pedido, notice: 'Detalle creado exitosamente!'
+      redirect_to @ventas_pedido, notice: 'Detalle guardado exitosamente!'
     else
-      redirect_to new_ventas_pedido_url, notice: 'Detalle creado exitosamente!' 
+      redirect_to new_ventas_pedido_url, notice: 'Detalle guardado exitosamente!' 
     end
   end
 
@@ -189,9 +196,9 @@ class Ventas::PedidosController < PrivateController
 
     def set_ventas_pedidos_catalogos_show_edit
       @cliente = Ventas::Cliente.find(@ventas_pedido.cliente_id)
-      @detalle = Ventas::PedidoDetalle.new
-      @detalle.cantidad = 1
+      @detalle = Ventas::PedidoDetalle.where(id: params[:detalle_id]).first_or_initialize
       @detalle.pedido_id = @ventas_pedido.id
+      @detalle.cantidad = 1 if @detalle.new_record?
       @productos = Inventario::Producto.select("id,concat_ws(' ','( ',precio,' ) - ', nombre) as nombre_producto")
                                        .where('categoria_producto_id in (1,2)').order('nombre')
       @productos_complemento = Inventario::Producto.select("id,concat_ws(' ','( ',precio,' ) - ', nombre) as nombre_producto")
@@ -199,7 +206,7 @@ class Ventas::PedidosController < PrivateController
     end
 
     def ventas_pedido_detalle_params
-      params.require(:ventas_pedido_detalle).permit(:pedido_id, :producto_id, :producto_complemento_id, :cantidad, :precio, :observacion)
+      params.require(:ventas_pedido_detalle).permit(:id, :pedido_id, :producto_id, :producto_complemento_id, :cantidad, :precio, :observacion)
     end
 
     def autorizacion!

@@ -41,3 +41,8 @@ ul.content-list > li::before, ul.content-list > li::after {
 ul.content-list > li {
   border-bottom: 1px solid #eee;
 }
+
+.daterangepicker.picker_4 table.table-condensed thead tr:first-child {
+  background: #34495E;
+  color: #333333 !important;
+}

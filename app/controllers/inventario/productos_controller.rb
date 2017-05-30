@@ -8,7 +8,7 @@ class Inventario::ProductosController < PrivateController
     @categoria_id = params[:categoria]
     @buscar = params[:buscar].to_s
     @inventario_productos  = Inventario::Producto.select('productos.id, productos.nombre, productos.precio, categoria_productos.nombre as categoria')
-                                                 .joins(:rel_categoria_producto).order('productos.nombre').page params[:page]
+                                                 .joins(:rel_categoria_producto).order('productos.nombre')
     @inventario_productos = @inventario_productos.where('productos.nombre ilike ?',  '%' + @buscar + '%') unless @buscar.blank?
     @inventario_productos = @inventario_productos.where(categoria_producto_id: @categoria_id) unless @categoria_id.blank?
   end

@@ -1,2 +1,0 @@
-module Ventas::VentaPorClienteHelper
-end

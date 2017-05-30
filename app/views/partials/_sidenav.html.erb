@@ -35,30 +35,19 @@
           <li>
             <a><i class="fa fa-edit"></i> Ventas <span class="fa fa-chevron-down"></span></a>
             <ul class="nav child_menu" style="display: none">
-              <% if policy(:controller_ventas_pedidos).index? %>
                   <li><a href="/ventas/pedidos">Pedidos</a></li>
-              <% end %>
-              <% if policy(:controller_ventas_clientes).index? %>
                   <li><a href="/ventas/clientes">Clientes</a></li>
-              <% end %>
-              <% if policy(:controller_ventas_agrupador_clientes).index? %>
                   <li><a href="/ventas/agrupador_clientes">Agrupador Clientes</a></li>
-              <% end %>
             </ul>
           </li>
           <!-- /VENTAS -->
-          <% if current_usuario.gerente? || current_usuario.admin? %>
               <!-- INVENTARIO -->
               <li><a><i class="fa fa-desktop"></i> Inventario <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu" style="display: none">
-                  <% if policy(:controller_inventario_productos).index? %>
                       <li><a href="/inventario/productos">Productos</a></li>
-                  <% end %>
                 </ul>
               </li>
               <!-- /INVENTARIO -->
-          <% end %>
-          <% if current_usuario.gerente? || current_usuario.admin? %>
               <!-- FACTURACION -->
               <li>
                 <a><i class="fa fa-money"></i> Facturación <span class="fa fa-chevron-down"></span></a>
@@ -69,9 +58,7 @@
                       <span class="fa fa-chevron-down"></span>
                     </a>
                     <ul class="nav child_menu" style="display: none">
-                      <% if policy(:controller_facturacion_pedidos).index? %>
                           <li><a href="/facturacion/facturacion_cuentas/index">Cuentas</a></li>
-                      <% end %>
                     </ul>
                   </li>
                   <li>
@@ -80,12 +67,8 @@
                       <span class="fa fa-chevron-down"></span>
                     </a>
                     <ul class="nav child_menu" style="display: none">
-                      <% if policy(:controller_facturacion_cuentas_activas).index? %>
                           <li><a href="/facturacion/cuentas_activas/index">Cuentas Activas</a></li>
-                      <% end %>
-                      <% if policy(:controller_facturacion_cierre_cuentas_activas).index? %>
                           <li><a href="/facturacion/cierre_cuentas_activas/index">Cierre Cuentas Activas</a></li>
-                      <% end %>
                     </ul>
                   </li>
                   <li>
@@ -94,21 +77,15 @@
                       <span class="fa fa-chevron-down"></span>
                     </a>
                     <ul class="nav child_menu" style="display: none">
-                      <% if policy(:controller_facturacion_pedidos).index? %>
                           <li><a href="/facturacion/pedidos/index">Pedidos</a></li>
-                      <% end %>
-                      <% if policy(:controller_facturacion_pedidos_fecha).index? %>
                           <li><a href="/facturacion/pedidos_fecha/index">Pedidos por fecha</a></li>
-                      <% end %>
                     </ul>
                   </li>
                 </ul>
               </li>
               <!-- /FACTURACION -->
-          <% end %>
         </ul>
       </div>
-      <% if current_usuario.admin? %>
           <!-- ADMINISTRACION -->
           <div class="menu_section">
             <h3>Administración</h3>
@@ -130,7 +107,6 @@
             </ul>
           </div>
           <!-- /ADMINISTRACION -->
-      <% end %>
     </div>
     <!-- /sidebar menu -->
     <!-- /menu footer buttons -->

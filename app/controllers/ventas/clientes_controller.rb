@@ -10,7 +10,6 @@ class Ventas::ClientesController < PrivateController
     @ventas_clientes = Ventas::Cliente.select('clientes.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre,
                                               clientes.segundo_nombre, agrupador_clientes.nombre as grupo').joins(:rel_agrupador_cliente)
                                                                                                            .order('grupo, primer_apellido')
-                                                                                                           .page params[:page]
     @ventas_clientes = @ventas_clientes.where('clientes.agrupador_cliente_id =?', @agrupador) unless @agrupador.blank?
     @ventas_clientes = @ventas_clientes.where('concat_ws(primer_apellido, segundo_apellido, primer_nombre, segundo_nombre) ilike ?',
                                             '%' + @buscar + '%') unless @buscar.blank?

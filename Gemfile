@@ -15,13 +15,13 @@ gem 'actionpack-action_caching'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 
 # Paginacion
-gem 'kaminari'
+# gem 'kaminari'
 
 # Gema para convertir las cadenas con espacios en blancos a nulas
 gem 'strip_attributes'
 
 # Authorization Gem for Ruby on Rails.
-gem 'pundit'
+# gem 'pundit'
 
 # A configurable and documented Rail view helper for adding gravatars into your Rails application
 gem 'gravatar_image_tag'
@@ -81,7 +81,6 @@ group :development do
 
   # Static code analyzer, based on the community Ruby style guide
   gem 'rubocop', '~> 0.43.0', require: false
-  # An IRB alternative and runtime developer console 
+  # An IRB alternative and runtime developer console
   gem 'pry'
 end
-

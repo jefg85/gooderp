@@ -15,10 +15,4 @@ class Facturacion::PedidosController < PrivateController
     @agrupador_cliente = Ventas::AgrupadorCliente.select('*').order('nombre')
   end
 
-  private
-
-  def autorizacion!
-    authorize :controller_facturacion_pedidos, :index?
-  end
-
 end

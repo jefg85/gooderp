@@ -11,18 +11,10 @@
         <li class="">
           <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
             <%= gravatar_image_tag(current_usuario.email, { alt: current_usuario.email }) %>
-
-            <% if usuario_signed_in? %>
-              <%= current_usuario.email %>
-            <% end %>
+            <%= current_usuario.email if usuario_signed_in?%>
             <span class=" fa fa-angle-down"></span>
           </a>
           <ul class="dropdown-menu dropdown-usermenu pull-right">
-            <li><a href="javascript:;">  Cuenta</a>
-            </li>
-            <li>
-              <a href="javascript:;">Ayuda</a>
-            </li>
             <li>
               <%= link_to 'Salir', destroy_usuario_session_path, :method => :delete %>
             </li>

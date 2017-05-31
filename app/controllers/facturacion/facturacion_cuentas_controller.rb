@@ -34,10 +34,4 @@ class Facturacion::FacturacionCuentasController < PrivateController
     redirect_to '/facturacion/facturacion_cuentas/index', notice: 'Cuenta facturada con exito!'
   end
 
-  private
-
-  def autorizacion!
-    authorize :controller_facturacion_cuentas_activas, :index?
-  end
-
 end

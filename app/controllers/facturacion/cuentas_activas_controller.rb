@@ -35,8 +35,4 @@ class Facturacion::CuentasActivasController < PrivateController
 
   private
 
-  def autorizacion!
-    authorize :controller_facturacion_cuentas_activas, :index?
-  end
-
 end

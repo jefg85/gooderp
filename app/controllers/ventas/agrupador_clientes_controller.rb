@@ -74,8 +74,4 @@ class Ventas::AgrupadorClientesController < PrivateController
       params.require(:ventas_agrupador_cliente).permit(:nombre, :descripcion)
     end
 
-  def autorizacion!
-    authorize :controller_ventas_agrupador_clientes, :index?
-  end
-
 end

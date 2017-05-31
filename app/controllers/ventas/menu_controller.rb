@@ -62,10 +62,4 @@ class Ventas::MenuController < PrivateController
     end
   end
 
-  private
-
-  def autorizacion!
-    authorize :controller_ventas_menu, :index?
-  end
-
 end

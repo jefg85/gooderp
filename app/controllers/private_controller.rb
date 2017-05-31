@@ -1,7 +1,6 @@
 class PrivateController < ApplicationController
 
   before_action :authenticate_usuario!
-  before_action :autorizacion!
   before_action :set_paper_trail_whodunnit
 
   def user_for_paper_trail

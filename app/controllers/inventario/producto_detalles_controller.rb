@@ -72,9 +72,4 @@ class Inventario::ProductoDetallesController < PrivateController
       params.require(:inventario_producto_detalle).permit(:producto_id, :nombre, :descripcion)
     end
 
-
-  def autorizacion!
-    authorize :controller_inventario_producto_detalles, :index?
-  end
-
 end

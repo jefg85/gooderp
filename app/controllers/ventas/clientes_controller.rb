@@ -86,7 +86,4 @@ class Ventas::ClientesController < PrivateController
                                              :agrupador_cliente_id, :email, :piso)
     end
 
-  def autorizacion!
-    authorize :controller_ventas_clientes, :index?
-  end
 end

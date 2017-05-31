@@ -38,10 +38,4 @@ class Facturacion::CierreCuentasActivasController < PrivateController
     redirect_to '/facturacion/cierre_cuentas_activas/index?agrupador=' + agrupador_id, notice: 'Cuentas cerradas con exito!'
   end
 
-  private
-
-  def autorizacion!
-    authorize :controller_facturacion_cuentas_activas, :index?
-  end
-
 end

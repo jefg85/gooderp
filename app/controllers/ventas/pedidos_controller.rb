@@ -209,7 +209,4 @@ class Ventas::PedidosController < PrivateController
       params.require(:ventas_pedido_detalle).permit(:id, :pedido_id, :producto_id, :producto_complemento_id, :cantidad, :precio, :observacion)
     end
 
-    def autorizacion!
-      authorize :controller_ventas_pedidos, :index?
-    end
 end

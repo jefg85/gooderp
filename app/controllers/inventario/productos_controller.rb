@@ -82,8 +82,4 @@ class Inventario::ProductosController < PrivateController
       @categorias = Inventario::CategoriaProducto.select('*').where(pasivo: false).order('nombre')
     end
 
-    def autorizacion!
-      authorize :controller_inventario_productos, :index?
-    end
-
 end

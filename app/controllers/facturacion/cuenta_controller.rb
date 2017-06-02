@@ -1,4 +1,4 @@
-class Facturacion::CierreCuentasActivasController < PrivateController
+class Facturacion::CuentaController < ApplicationController
   def index
     @agrupador_id = params[:agrupador]
     @buscar = params[:buscar].to_s
@@ -37,5 +37,5 @@ class Facturacion::CierreCuentasActivasController < PrivateController
     cuentas.update_all(fecha_fin: fecha, situacion: 1)
     redirect_to '/facturacion/cierre_cuentas_activas/index?agrupador=' + agrupador_id, notice: 'Cuentas cerradas con exito!'
   end
-
+  
 end

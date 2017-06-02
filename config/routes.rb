@@ -1,28 +1,24 @@
 Rails.application.routes.draw do
+ 
   devise_for :usuarios, class_name: 'Seguridad::Usuario'
 
-  # You can have the root of your site routed with "root"
   root 'home#index'
 
   namespace :facturacion do
     get 'pedidos/index'
     get 'pedidos_fecha/index'
 
-    get 'cuentas_activas/detalle'
-    get 'cuentas_activas/index'
-    post 'cuentas_activas/imprimir_cuenta'
-
     get 'cuentas_por_cliente/detalle'
     get 'cuentas_por_cliente/index'
-
-    get 'cierre_cuentas_activas/detalle'
-    get 'cierre_cuentas_activas/index'
-    post 'cierre_cuentas_activas/imprimir_cuenta'
-    post 'cierre_cuentas_activas/cerrar_cuentas'
 
     get 'facturacion_cuentas/detalle'
     get 'facturacion_cuentas/index'
     post 'facturacion_cuentas/facturar'
+
+    get 'cuenta/index'
+    get 'cuenta/detalle'
+    post 'cuenta/imprimir_cuenta'
+    post 'cuenta/cerrar_cuentas'
   end
 
   namespace :ventas do
@@ -37,8 +33,8 @@ Rails.application.routes.draw do
     post 'pedidos/rpt_etiqueta_individual'
     post 'pedidos/credito'
     post 'pedidos/contado'
+    
     resources :pedidos
-
     resources :agrupador_clientes
     resources :clientes
   end

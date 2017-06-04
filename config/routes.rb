@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     get 'cuenta/detalle'
     post 'cuenta/imprimir_cuenta'
     post 'cuenta/cerrar_cuentas'
+    post 'cuenta/cerrar'
+    post 'cuenta/abrir'
   end
 
   namespace :ventas do

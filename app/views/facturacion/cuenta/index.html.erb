@@ -49,9 +49,11 @@
             <table id="cuentas" class="table table-striped table-hover">
               <thead>
               <tr>
-                <th style="width: 70%">Cliente</th>
-                <th style="width: 15%">Cantidad de Pedidos</th>
-                <th style="width: 15%">Total</th>
+                <th style="width: 50%">Cliente</th>
+                <th style="width: 30%">Fecha</th>
+                <th style="width: 15%">Plato Principal cantidad/monto</th>
+                <th style="width: 15%">Extra cantidad/monto</th>
+                <th style="width: 15%">Pedidos cantidad/monto</th>
                 <th style="width: 15%" colspan="2">Acciones</th>
               </tr>
               </thead>
@@ -60,26 +62,26 @@
                   <tr>
                     <td>
                       <a href="/facturacion/cuenta/detalle?id=<%=c.id%>">
-                      <%= c.nombre_cliente  %>
+                      <%= c.rel_cliente.nombre_completo  %>
                       </a>
                     </td>
+                    <td><%= c.fecha_inicio %> - <%= c.fecha_fin unless c.fecha_fin.nil? %></td>
                     <td>
-                      <%= c.cantidad_pedido  %>
+                      <%= c.detalle_cuenta[:cantidad_plato_principal]  %> / <%= c.detalle_cuenta[:monto_plato_principal]  %>
                     </td>
                     <td>
-                      <%= c.monto_cuenta  %>
+                      <%= c.detalle_cuenta[:cantidad_extras]  %> / <%= c.detalle_cuenta[:monto_extra]  %>
                     </td>
                     <td>
-                      <% if c.situacion.zero? %>
-                        <button class="btn btn-warning" onclick="cerrar_cuenta(<%= c. id %>)">Cerrar</button>
-                      <% else %>
-                        <button class="btn btn-danger" onclick="abrir_cuenta(<%= c. id %>)">Abrir</button>
-                      <% end %>
+                      <%= c.detalle_cuenta[:cantidad_pedido]  %> / <%= c.detalle_cuenta[:monto_total_cuenta]  %>
+                    </td>
+                    <td>
+                        <button id="btn-<%= c. id %>" class="btn btn-<%= c.es_activa? ? 'warning' : 'danger' %> btn-xs" onclick="abrir_cerrar_cuenta(<%= c. id %>)"><%= c.es_activa? ? 'Cerrar' : 'Abrir' %></button>
                     </td>
                     <td>
                       <%= form_tag('/facturacion/cuenta/imprimir_cuenta', target: '_blank', method: 'post', id: 'frm_imprimir_cuenta')do %>
                           <input type="hidden" name="id" value="<%=c.id%>"/>
-                          <input type="submit" value="Imprimir" class="btn btn-primary"/>
+                          <input type="submit" value="Imprimir" class="btn btn-primary btn-xs"/>
                       <% end %>
                     </td>
                   </tr>
@@ -118,23 +120,19 @@
 
   });
 
-  function cerrar_cuenta(id){
-    $.post('/facturacion/cuenta/cerrar',{ id: id }, function(data){
+  function abrir_cerrar_cuenta(id){
+    $.post('/facturacion/cuenta/abrir_cerrar_cuenta',{ id: id }, function(data){
       if (data.result) {
-        
-      }
-      else {
-      }
-      alert(data.message);
-    });
-  }
-
-  function abrir_cuenta(id){
-    $.post('/facturacion/cuenta/abrir',{ id: id }, function(data){
-      if (data.result) {
-        
-      }
-      else {
+        if(data.situacion == 0){
+          $("#btn-" + id).removeClass('btn-danger');
+          $("#btn-" + id).addClass('btn-warning');
+          $("#btn-" + id).html('Cerrar');
+        }
+        else {
+          $("#btn-" + id).removeClass('btn-warning');
+          $("#btn-" + id).addClass('btn-danger');
+          $("#btn-" + id).html('Abrir');
+        }
       }
       alert(data.message);
     });

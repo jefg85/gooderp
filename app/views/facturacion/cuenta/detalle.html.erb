@@ -8,7 +8,7 @@
       </div>
       <div class="title_right">
         <div class="pull-right">
-          <a href="/facturacion/cierre_cuentas_activas/index" class="btn btn-primary">Regresar</a>
+          <a href="/facturacion/cuenta/index" class="btn btn-primary">Regresar</a>
         </div>
       </div>
     </div>
@@ -40,7 +40,7 @@
                 <b>Cliente</b>
               </div>
               <div class="col-md-9 col-sm-9 col-xs-9">
-                <%= @cliente.nombre_completo %>
+                <%= @cuenta.rel_cliente.nombre_completo %>
               </div>
             </div>
             <div class="row">
@@ -48,15 +48,46 @@
                 <b>Cantidad de pedidos</b>
               </div>
               <div class="col-md-3 col-sm-3 col-xs-3">
-                <%= @cuenta.cantidad_pedidos %>
+                <%= @cuenta.detalle_cuenta[:cantidad_pedido] %>
               </div>
               <div class="col-md-3 col-sm-3 col-xs-3">
-                <b>Monto total</b>
+                <b>Monto Pedidos</b>
               </div>
               <div class="col-md-3 col-sm-3 col-xs-3">
-                <%= @cuenta.monto_total %>
+                <%= @cuenta.detalle_cuenta[:monto_total_cuenta] %>
               </div>
             </div>
+
+            <div class="row">
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <b>Cantidad de Plato Principal</b>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <%= @cuenta.detalle_cuenta[:cantidad_plato_principal] %>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <b>Monto Plato Principal</b>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <%= @cuenta.detalle_cuenta[:monto_plato_principal] %>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <b>Cantidad de Extras</b>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <%= @cuenta.detalle_cuenta[:cantidad_extras] %>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <b>Monto Extra</b>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <%= @cuenta.detalle_cuenta[:monto_extra] %>
+              </div>
+            </div>
+
           </div>
         </div>
         </div>

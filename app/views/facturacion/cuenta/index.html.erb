@@ -17,7 +17,7 @@
         <div class="x_panel">
           <div class="x_title">
             <div class="row">
-              <form id="form_buscar" action="/facturacion/cuenta/index" class="form-horizontal form-label-left">
+              <form id="form_buscar" action="/facturacion/cuenta/index" class="form-horizontal form-label-left col-md-11">
                 <div class="col-md-3">
                   <input type="text" name="fecha" id="fecha" class="form-control col-md-7" />
                 </div>
@@ -25,7 +25,7 @@
                   <%= select_tag 'agrupador', options_for_select(@agrupador_cliente.collect {|a| [ a[:nombre], a[:id] ] }),
                                  { include_blank: true, class: 'form-control agrupador' } %>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                   <input placeholder="Nombre Cliente ..." type="text" name="buscar" id="buscar" class="form-control col-md-7"/>
                 </div>
                 <div class="col-md-2">
@@ -35,13 +35,10 @@
                 <div class="col-md-1">
                   <input type="submit" value="Buscar" class="btn btn-primary"/>
                 </div>
+                </form>
                 <div class="col-md-1">
                   <button id="btn_cerrar_cuenta" class="btn btn-warning">Cerrar</button>
                 </div>
-                <div class="col-md-1">
-                  <button class="btn btn-primary" onclick="$('#frm_imprimir_cuenta').submit();">Imprimir</button>
-                </div>
-              </form>
             </div>
             <div class="clearfix"></div>
           </div>
@@ -94,6 +91,10 @@
     </div>
   </div>
 </div>
+<%= form_tag('/facturacion/cuenta/cerrar_cuentas', method: 'post', id: 'frm_cerrar_cuenta')do %>
+ <input type="hidden" id="frm_cerrar_cuenta_fecha" name="fecha"> 
+ <input type="hidden" id="frm_cerrar_cuenta_agrupador" name="agrupador">
+<% end %>
 <script>
   $(document).ready(function() {
     $('.agrupador').val('<%=@agrupador_id%>');
@@ -111,10 +112,12 @@
         alert('Seleccione una fecha');
         return false;
       }
-      if($('#frm_cerrar_cuenta_agrupador').val()==''){
-        alert('Seleccione un agruapdaro');
+      if($('#agrupador').val()==''){
+        alert('Seleccione un agrupador');
         return false;
       }
+      $('#frm_cerrar_cuenta_fecha').val($('#fecha').val());
+      $('#frm_cerrar_cuenta_agrupador').val($('#agrupador').val());
       $('#frm_cerrar_cuenta').submit();
     });
 

@@ -11,7 +11,7 @@ class Facturacion::CuentaController < ApplicationController
 
     @cuentas = Facturacion::Cuentum.includes(:rel_cliente).where('cuenta.situacion= ?', @situacion).order(:fecha_inicio)
     @cuentas = @cuentas.where('fecha_inicio between ? and ?', @fecha.split(' ')[0], @fecha.split(' ')[2]) unless @fecha.blank?
-    @cuentas = @cuentas.where('agrupador_cliente_id=?', @agrupador_id) unless @agrupador_id.blank?
+    @cuentas = @cuentas.where('clientes.agrupador_cliente_id=?', @agrupador_id).references(:rel_cliente) unless @agrupador_id.blank?
     unless @buscar.blank?
       @cuentas = @cuentas.where('concat_ws(primer_apellido, segundo_apellido, primer_nombre, segundo_nombre) ilike ?',
                                 '%' + @buscar + '%')
@@ -37,11 +37,18 @@ class Facturacion::CuentaController < ApplicationController
   end
 
   def cerrar_cuentas
-    agrupador_id = params[:agrupador]
-    fecha = params[:fecha]
-    cuentas = Facturacion::Cuentum.joins(:rel_cliente).select('*').where('cuenta.situacion = 0 and clientes.agrupador_cliente_id=?',agrupador_id)
-    cuentas.update_all(fecha_fin: fecha, situacion: 1)
-    redirect_to '/facturacion/cierre_cuentas_activas/index?agrupador=' + agrupador_id, notice: 'Cuentas cerradas con exito!'
+    begin
+      binding.pry
+      agrupador_id = params[:agrupador]
+      fecha = params[:fecha].strip!.split(' ')[2]
+      cuentas = Facturacion::Cuentum.joins(:rel_cliente).select('*').where('cuenta.situacion = 0 and clientes.agrupador_cliente_id=?',agrupador_id)
+      cuentas.update_all(fecha_fin: fecha, situacion: 1)
+      flash[:notice] = 'Cuentas cerradas correctamente'
+    rescue StandardError => e
+      flash[:error] = 'Error al cerrar cuentas: ' + e.message
+    ensure
+      redirect_to '/facturacion/cuentas/index?agrupador=' + agrupador_id
+    end    
   end
 
   def abrir_cerrar_cuenta

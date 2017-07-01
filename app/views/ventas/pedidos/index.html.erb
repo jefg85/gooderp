@@ -1,3 +1,59 @@
+<script type="text/javascript">
+  function fnCreditoContado(pedidoId){
+    $.post('/ventas/pedidos/credito_contado',{ id: pedidoId }, function(data){
+      if (data.result) {
+        if(data.contado){
+          $("#btn-" + pedidoId).removeClass('btn-warning');
+          $("#btn-" + pedidoId).addClass('btn-primary');
+          $("#row-" + pedidoId).addClass('bg-danger');
+          $("#btn-" + pedidoId).html('Pasar al Contado');
+        }
+        else {
+          $("#btn-" + pedidoId).removeClass('btn-primary');
+          $("#btn-" + pedidoId).addClass('btn-warning');
+          $("#row-" + pedidoId).removeClass('bg-danger');
+          $("#btn-" + pedidoId).html('Agregar a la cuenta');
+        }
+        new PNotify({
+            title: 'Exito',
+            text: data.message,
+            type: 'success'
+        });
+      }
+      else{
+        new PNotify({
+            title: 'Error',
+            text: data.message,
+            type: 'error'
+        });
+      }
+    });
+  }
+
+  function fnEtiqueta(pedidoId){
+    $.post('/ventas/pedidos/etiqueta',{ id: pedidoId }, function(data){
+      if (data.result) {
+        if(data.etiqueta){
+          $("#etiqueta-" + pedidoId).removeClass('btn-primary');
+          $("#etiqueta-" + pedidoId).addClass('btn-success');
+          $("#etiqueta-" + pedidoId).html('SI');
+        }
+        else {
+          $("#etiqueta-" + pedidoId).removeClass('btn-success');
+          $("#etiqueta-" + pedidoId).addClass('btn-primary');
+          $("#etiqueta-" + pedidoId).html('NO');
+        }
+      }
+      else{
+        new PNotify({
+            title: 'Error',
+            text: data.message,
+            type: 'error'
+        });
+      }
+    });
+  }
+</script>
 <div class="right_col" role="main">
   <div class="">
     <div class="page-title">
@@ -38,7 +94,7 @@
                 <input placeholder="Nombre Cliente..." type="text" name="buscar" id="buscar" class="form-control" value="<%= @buscar %>"/>
               </div>
               <div class="col-md-2 col-sm-4 col-xs-12">
-                <%= select_tag 'agrupador', options_for_select(@agrupador_cliente.collect { |a| [a[:nombre], a[:id]] }), {include_blank: true, class: 'form-control'} %>
+                <%= select_tag 'agrupador', options_for_select(@agrupador_cliente.collect { |a| [a[:nombre], a[:id]] }), {include_blank: 'Agrupador', class: 'form-control'} %>
               </div>
               <div class="col-md-2 col-sm-4 col-xs-12">
                 <input type="submit" value="Buscar" class="btn btn-primary form-control"/>
@@ -53,23 +109,31 @@
       </div>
       <div class="x_content" style="display: block;">
         <div class="row bg-primary hidden-xs">
+          <div class="col-md-1 col-sm-1 col-xs-1"><strong>ETIQUETA</strong></div>
           <div class="col-md-1 col-sm-1 col-xs-1"><strong>HORA</strong></div>
-          <div class="col-md-8 col-sm-8 col-xs-8"><strong>PEDIDO</strong></div>
+          <div class="col-md-7 col-sm-7 col-xs-7"><strong>PEDIDO</strong></div>
           <div class="col-md-1 col-sm-1 col-xs-1"><strong>TOTAL</strong></div>
           <div class="col-md-2 col-sm-2 col-xs-2"><strong>ACCIONES</strong></div>
         </div>
         <br>
         <% @ventas_pedidos.each do |ventas_pedido| %>
-            <div class="row <%= ventas_pedido.al_credito? ? 'bg-danger' : '' %> ">
+            <div id="row-<%= ventas_pedido.id %>" class="row <%= ventas_pedido.al_credito? ? 'bg-danger' : '' %> ">
+              <div class="col-md-1 col-sm-1 col-xs-12">
+                <% if ventas_pedido.etiqueta %>
+                  <button id="etiqueta-<%= ventas_pedido.id %>" class="btn btn-xs btn-success" onclick="fnEtiqueta(<%= ventas_pedido.id %>)">SI</button>
+                <% else %>
+                   <button  id="etiqueta-<%= ventas_pedido.id %>" class="btn btn-xs btn-primary" onclick="fnEtiqueta(<%= ventas_pedido.id %>)">NO</button> 
+                <% end %>
+              </div>
               <div class="col-md-1 col-sm-1 col-xs-12">
                 <%= ventas_pedido.created_at.strftime('%H:%M:%S') %>
               </div>
-              <div class="col-md-8 col-sm-7 col-xs-12">
+              <div class="col-md-7 col-sm-7 col-xs-12">
                 <div class="row">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <a href="/ventas/pedidos/<%= ventas_pedido.id %>">
                       <b>
-                        <%= ventas_pedido.grupo %> <br>
+                        <%= ventas_pedido.grupo %> /
                         <%= ventas_pedido.email %> /
                         <%= ventas_pedido.primer_apellido %>
                         <%= ventas_pedido.segundo_apellido %>
@@ -110,19 +174,9 @@
               </div>
               <div class="col-md-2 col-sm-3 col-xs-12">
                 <% if ventas_pedido.al_credito? %>
-                    <%= form_tag '/ventas/pedidos/contado', {id: 'frm_contado', method: 'post'} do %>
-                        <input type="hidden" name="id" value="<%= ventas_pedido.id %>">
-                        <input type="hidden" name="fecha" value="<%= @fecha %>">
-                        <input type="hidden" name="agrupador" value="<%= @agrupador %>">
-                        <input type="submit" value="Pasar al Contado" class="btn btn-primary form-control">
-                    <% end %>
+                  <button id="btn-<%= ventas_pedido.id %>" class="btn btn-primary form-control" onclick="fnCreditoContado(<%= ventas_pedido.id %>)">Pasar al Contado</button>
                 <% else %>
-                    <%= form_tag '/ventas/pedidos/credito', {id: 'frm_credito', method: 'post'} do %>
-                        <input type="hidden" name="id" value="<%= ventas_pedido.id %>">
-                        <input type="hidden" name="fecha" value="<%= @fecha %>">
-                        <input type="hidden" name="agrupador" value="<%= @agrupador %>">
-                        <input type="submit" value="Agregar a la cuenta" class="btn btn-warning form-control">
-                    <% end %>
+                   <button  id="btn-<%= ventas_pedido.id %>" class="btn btn-warning form-control" onclick="fnCreditoContado(<%= ventas_pedido.id %>)">Agregar a la cuenta</button>
                 <% end %>
               </div>
             </div>
@@ -150,7 +204,11 @@
     function fn_imprimir_lista_pedidos() {
       var agrupador = $('#agrupador').val();
       if (agrupador == "") {
-        alert("Seleccione el Agrupador");
+        new PNotify({
+              title: 'Error',
+              text: 'Seleccione el Agrupador',
+              type: 'error'
+          });
         return false;
       }
 

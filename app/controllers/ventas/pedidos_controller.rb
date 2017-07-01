@@ -3,8 +3,6 @@ class Ventas::PedidosController < PrivateController
   before_action :set_ventas_pedidos_catalogos, only: [:new, :create, :update, :destroy]
   before_action :set_ventas_pedidos_catalogos_show_edit, only: [:show]
 
-  # GET /ventas/pedidos
-  # GET /ventas/pedidos.json
   def index
     @fecha = params[:fecha].blank? ? Date.today : params[:fecha]
     @buscar = params[:buscar].to_s
@@ -13,7 +11,7 @@ class Ventas::PedidosController < PrivateController
     @cantidad_extras = 0
 
     @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre,
-                                             clientes.segundo_nombre, agrupador_clientes.nombre as grupo, pedidos.created_at, clientes.piso')
+                                             clientes.segundo_nombre, agrupador_clientes.nombre as grupo, pedidos.created_at, clientes.piso, pedidos.etiqueta')
                                     .joins({:rel_cliente => :rel_agrupador_cliente})
                                     .where('pedidos.fecha = ?', @fecha)
                                     .order('pedidos.created_at desc')
@@ -35,21 +33,13 @@ class Ventas::PedidosController < PrivateController
       @cantidad_extras = @cantidad_extras + p.cantidad if p.categoria_producto_id == 2
     end
 
-    @agrupador_cliente = Ventas::AgrupadorCliente.select('*').order('nombre')
+    @agrupador_cliente = Ventas::AgrupadorCliente.activos
   end
 
-  # GET /ventas/pedidos/1
-  # GET /ventas/pedidos/1.json
-  def show
-  end
-
-  # GET /ventas/pedidos/new
   def new
     @ventas_pedido = Ventas::Pedido.new
   end
 
-  # POST /ventas/pedidos
-  # POST /ventas/pedidos.json
   def create
     @ventas_pedido = Ventas::Pedido.new(ventas_pedido_params)
 
@@ -64,8 +54,6 @@ class Ventas::PedidosController < PrivateController
     end
   end
 
-  # PATCH/PUT /ventas/pedidos/1
-  # PATCH/PUT /ventas/pedidos/1.json
   def update
     respond_to do |format|
       if @ventas_pedido.update(ventas_pedido_params)
@@ -78,8 +66,6 @@ class Ventas::PedidosController < PrivateController
     end
   end
 
-  # DELETE /ventas/pedidos/1
-  # DELETE /ventas/pedidos/1.json
   def destroy
     @ventas_pedido.destroy
     respond_to do |format|
@@ -142,41 +128,59 @@ class Ventas::PedidosController < PrivateController
     send_data server.ejecutar_reporte, type: server.obtener_content_type, filename: server.obtener_nombre, disposition: 'inline'
   end
 
-  def credito
-    fecha = params[:fecha].blank? ? Date.today : params[:fecha]
-    agrupador = params[:agrupador]
-
-    ActiveRecord::Base.transaction do
-      ventas_pedido = Ventas::Pedido.find(params[:id])
-      cuenta_activa = nil
-      cuenta = Facturacion::Cuentum.where('cliente_id = ? and situacion = 0', ventas_pedido.cliente_id)
-      if cuenta.blank?
-        cuenta_activa = Facturacion::Cuentum.new
-        cuenta_activa.fecha_inicio = ventas_pedido.fecha
-        cuenta_activa.cliente_id = ventas_pedido.cliente_id
-        cuenta_activa.situacion = 0
-        cuenta_activa.save
-      else
-        cuenta_activa = cuenta[0]
-      end
-
-      cuenta_detalle = Facturacion::CuentaDetalle.new
-      cuenta_detalle.cuenta_id = cuenta_activa.id
-      cuenta_detalle.pedido_id = ventas_pedido.id
-      cuenta_detalle.save
-
-      redirect_to ventas_pedidos_url + '?fecha='+fecha+'&agrupador='+agrupador, notice: 'El pedido se agregado a la cuenta de crédito'
-    end
+  def etiqueta
+    begin
+      result = true
+      message = ''
+      pedido = Ventas::Pedido.find(params[:id])
+      pedido.toggle(:etiqueta)
+      pedido.save!
+    rescue StandardError => e
+      result = false
+      message = e.mesage
+    ensure
+      render json: { result: result, message: message, etiqueta: pedido.etiqueta }
+    end   
   end
 
-  def contado
-    fecha = params[:fecha].blank? ? Date.today : params[:fecha]
-    agrupador = params[:agrupador]
+  def credito_contado
+    begin
+      result = true
+      message = ''
+      pedido = nil
+      ActiveRecord::Base.transaction do
+        pedido = Ventas::Pedido.find(params[:id])
 
-    ventas_pedido = Ventas::Pedido.find(params[:id])
-    cuenta_detalle = ventas_pedido.rel_cuenta_detalle
-    cuenta_detalle.destroy
-    redirect_to ventas_pedidos_url + '?fecha='+fecha+'&agrupador='+agrupador, notice: 'El pedido se saco de la cuenta y quedo al contado'
+        unless pedido.rel_cuenta_detalle.present?
+          message = 'Agregado a la cuenta correctamente'
+          cuenta = Facturacion::Cuentum.where(cliente_id: pedido.cliente_id, situacion: 0)
+          cuenta_activa = if cuenta.blank?
+                            nueva_cuenta = Facturacion::Cuentum.new
+                            nueva_cuenta.fecha_inicio = pedido.fecha
+                            nueva_cuenta.cliente_id = pedido.cliente_id
+                            nueva_cuenta.situacion = 0
+                            nueva_cuenta.save!
+                            nueva_cuenta
+                          else
+                            cuenta.first
+                          end
+
+          cuenta_detalle = Facturacion::CuentaDetalle.new
+          cuenta_detalle.cuenta_id = cuenta_activa.id
+          cuenta_detalle.pedido_id = pedido.id
+          cuenta_detalle.save!
+
+      else
+        message = 'El pedido se saco de la cuenta y quedo al contado'
+        pedido.rel_cuenta_detalle.destroy!
+      end
+    end
+    rescue StandardError => e
+      result = false
+      message = e.mesage
+    ensure
+      render json: { result: result, message: message, contado: !pedido.rel_cuenta_detalle.present?}
+    end    
   end
 
   private

@@ -5,7 +5,7 @@ class Ventas::AgrupadorClientesController < PrivateController
   # GET /ventas/agrupador_clientes.json
   def index
     @buscar = params[:buscar].to_s
-    @ventas_agrupador_clientes = Ventas::AgrupadorCliente.select('*').order('nombre')
+    @ventas_agrupador_clientes = Ventas::AgrupadorCliente.all.order(:nombre)
     @ventas_agrupador_clientes = @ventas_agrupador_clientes.where('nombre ilike ?', '%' + @buscar + '%') unless @buscar.blank?
   end
 
@@ -71,7 +71,7 @@ class Ventas::AgrupadorClientesController < PrivateController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ventas_agrupador_cliente_params
-      params.require(:ventas_agrupador_cliente).permit(:nombre, :descripcion)
+      params.require(:ventas_agrupador_cliente).permit(:nombre, :descripcion, :pasivo)
     end
 
 end

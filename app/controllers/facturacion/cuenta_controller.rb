@@ -1,6 +1,6 @@
 class Facturacion::CuentaController < ApplicationController
   def index
-    @agrupador_cliente = Ventas::AgrupadorCliente.select('*').order('nombre')
+    @agrupador_cliente = Ventas::AgrupadorCliente.activos
     @situaciones = [{ id: 0, nombre: 'Abierto'}, { id: 1, nombre: 'Cerrado'}]
     @agrupador_id = params[:agrupador]
     @situacion = params[:situacion].to_i
@@ -38,7 +38,6 @@ class Facturacion::CuentaController < ApplicationController
 
   def cerrar_cuentas
     begin
-      binding.pry
       agrupador_id = params[:agrupador]
       fecha = params[:fecha].strip!.split(' ')[2]
       cuentas = Facturacion::Cuentum.joins(:rel_cliente).select('*').where('cuenta.situacion = 0 and clientes.agrupador_cliente_id=?',agrupador_id)

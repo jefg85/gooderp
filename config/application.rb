@@ -25,8 +25,6 @@ module GoodERP
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
 
-    config.assets.paths << Rails.root.join('vendor', 'assets', 'components', 'gentelella', 'production')
-
     config.to_prepare do
       Devise::SessionsController.layout false
       Devise::RegistrationsController.layout false

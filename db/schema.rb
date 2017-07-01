@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(version: 20161001090118) do
     t.string   'descripcion'
     t.datetime 'created_at',  null: false
     t.datetime 'updated_at',  null: false
+    t.boolean  'pasivo',   default: false,  null: false
   end
 
   create_table 'ventas_clientes', force: :cascade do |t|
@@ -155,6 +156,7 @@ ActiveRecord::Schema.define(version: 20161001090118) do
     t.integer  'cliente_id'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
+    t.boolean  'etiqueta',   default: false,  null: false
   end
 
 end

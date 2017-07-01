@@ -13,7 +13,7 @@ class Ventas::ClientesController < PrivateController
     @ventas_clientes = @ventas_clientes.where('clientes.agrupador_cliente_id =?', @agrupador) unless @agrupador.blank?
     @ventas_clientes = @ventas_clientes.where('concat_ws(primer_apellido, segundo_apellido, primer_nombre, segundo_nombre) ilike ?',
                                             '%' + @buscar + '%') unless @buscar.blank?
-    @agrupador_cliente = Ventas::AgrupadorCliente.select('*').order('nombre')
+    @agrupador_cliente = Ventas::AgrupadorCliente.todos
   end
 
   # GET /ventas/clientes/1
@@ -77,7 +77,7 @@ class Ventas::ClientesController < PrivateController
     end
 
     def set_ventas_cliente_catalogos
-      @agrupador = Ventas::AgrupadorCliente.select('*').order('nombre')
+      @agrupador = Ventas::AgrupadorCliente.activos
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -16,7 +16,7 @@ class Facturacion::FacturacionCuentasController < PrivateController
                               '%' + @buscar + '%') unless @buscar.blank?
     @monto_total = 0.0
     @cuentas.each{|c| @monto_total = @monto_total + c.monto_cuenta}
-    @agrupador_cliente = Ventas::AgrupadorCliente.select('*').order('nombre')
+    @agrupador_cliente = Ventas::AgrupadorCliente.activos
   end
 
   def detalle

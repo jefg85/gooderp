@@ -15,7 +15,7 @@ class Facturacion::PedidosFechaController < PrivateController
 
     @pedidos.each { |p| @monto_total = @monto_total + p.monto_total }
 
-    @agrupador_cliente = Ventas::AgrupadorCliente.select('*').order('nombre')
+    @agrupador_cliente = Ventas::AgrupadorCliente.activos
   end
 
 end

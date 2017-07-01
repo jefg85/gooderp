@@ -4,7 +4,7 @@ class Ventas::MenuController < PrivateController
   # GET /ventas/agrupador_clientes.json
   def index
     @buscar = params[:buscar].to_s
-    @ventas_agrupador_clientes = Ventas::AgrupadorCliente.select('*').order('nombre')
+    @ventas_agrupador_clientes = Ventas::AgrupadorCliente.activos
     @ventas_agrupador_clientes = @ventas_agrupador_clientes.where('nombre ilike ?', '%' + @buscar + '%') unless @buscar.blank?
   end
 

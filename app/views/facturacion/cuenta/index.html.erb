@@ -109,11 +109,19 @@
 
     $('#btn_cerrar_cuenta').click(function(){
       if($('#fecha').val()==''){
-        alert('Seleccione una fecha');
+        new PNotify({
+              title: 'Error',
+              text: 'Seleccione una fecha',
+              type: 'error'
+          });
         return false;
       }
       if($('#agrupador').val()==''){
-        alert('Seleccione un agrupador');
+        new PNotify({
+              title: 'Error',
+              text: 'Seleccione un agrupador',
+              type: 'error'
+          });
         return false;
       }
       $('#frm_cerrar_cuenta_fecha').val($('#fecha').val());
@@ -136,8 +144,19 @@
           $("#btn-" + id).addClass('btn-danger');
           $("#btn-" + id).html('Abrir');
         }
+        new PNotify({
+            title: 'Exito',
+            text: data.message,
+            type: 'success'
+        });
       }
-      alert(data.message);
+      else{
+          new PNotify({
+              title: 'Error',
+              text: data.message,
+              type: 'error'
+          });
+        }
     });
   }
 

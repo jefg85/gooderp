@@ -32,8 +32,8 @@ Rails.application.routes.draw do
     post 'pedidos/rpt_lista_pedidos'
     post 'pedidos/rpt_orden_trabajo'
     post 'pedidos/rpt_etiqueta_individual'
-    post 'pedidos/credito'
-    post 'pedidos/contado'
+    post 'pedidos/credito_contado'
+    post 'pedidos/etiqueta'
     
     resources :pedidos
     resources :agrupador_clientes

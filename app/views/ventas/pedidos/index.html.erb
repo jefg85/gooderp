@@ -97,9 +97,12 @@
                 <%= select_tag 'agrupador', options_for_select(@agrupador_cliente.collect { |a| [a[:nombre], a[:id]] }), {include_blank: 'Agrupador', class: 'form-control'} %>
               </div>
               <div class="col-md-2 col-sm-4 col-xs-12">
+                <%= select_tag 'plato_principal', options_for_select(@nombres_platos.collect { |a| [a[:nombre], a[:id]] }), {include_blank: 'Selección', class: 'form-control'} %>
+              </div>
+              <div class="col-md-1 col-sm-2 col-xs-12">
                 <input type="submit" value="Buscar" class="btn btn-primary form-control"/>
               </div>
-              <div class="col-md-2 col-sm-4 col-xs-12">
+              <div class="col-md-1 col-sm-2 col-xs-12">
                 <%= link_to 'Nuevo', new_ventas_pedido_path, {class: 'btn btn-primary form-control'} %>
               </div>
             </div>
@@ -122,7 +125,7 @@
                 <% if ventas_pedido.etiqueta %>
                   <button id="etiqueta-<%= ventas_pedido.id %>" class="btn btn-xs btn-success" onclick="fnEtiqueta(<%= ventas_pedido.id %>)">SI</button>
                 <% else %>
-                   <button  id="etiqueta-<%= ventas_pedido.id %>" class="btn btn-xs btn-primary" onclick="fnEtiqueta(<%= ventas_pedido.id %>)">NO</button> 
+                   <button  id="etiqueta-<%= ventas_pedido.id %>" class="btn btn-xs btn-primary" onclick="fnEtiqueta(<%= ventas_pedido.id %>)">NO</button>
                 <% end %>
               </div>
               <div class="col-md-1 col-sm-1 col-xs-12">
@@ -218,6 +221,7 @@
     }
 
     $('#agrupador').val('<%=@agrupador%>');
+    $('#plato_principal').val('<%=@plato_principal%>');
     $('#imprimir_pedidos_btn').click(fn_imprimir_lista_pedidos);
     $('#imprimir_orden_btn').click(fn_imprimir_orden_trabajo);
 

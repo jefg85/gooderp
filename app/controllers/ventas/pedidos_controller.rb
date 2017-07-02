@@ -7,32 +7,47 @@ class Ventas::PedidosController < PrivateController
     @fecha = params[:fecha].blank? ? Date.today : params[:fecha]
     @buscar = params[:buscar].to_s
     @agrupador = params[:agrupador]
+    @plato_principal = params[:plato_principal]
     @cantidad_plato_principal = 0
     @cantidad_extras = 0
+    @nombres_platos = [{}]
 
-    @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido, clientes.segundo_apellido, clientes.primer_nombre,
-                                             clientes.segundo_nombre, agrupador_clientes.nombre as grupo, pedidos.created_at, clientes.piso, pedidos.etiqueta')
-                                    .joins({:rel_cliente => :rel_agrupador_cliente})
+    @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido,
+                                             clientes.segundo_apellido, clientes.primer_nombre,
+                                             clientes.segundo_nombre, agrupador_clientes.nombre as grupo,
+                                             pedidos.created_at, clientes.piso, pedidos.etiqueta')
+                                    .uniq
+                                    .joins({:rel_pedido_detalle => :rel_producto},
+                                           {:rel_cliente => :rel_agrupador_cliente})
                                     .where('pedidos.fecha = ?', @fecha)
                                     .order('pedidos.created_at desc')
+
     @ventas_pedidos = @ventas_pedidos.where('clientes.agrupador_cliente_id =?', @agrupador) unless @agrupador.blank?
     @ventas_pedidos = @ventas_pedidos.where('concat_ws(primer_apellido, segundo_apellido, primer_nombre, segundo_nombre) ilike ?',
                                             '%' + @buscar + '%') unless @buscar.blank?
+    @ventas_pedidos = @ventas_pedidos.where('productos.id =?', @plato_principal) unless @plato_principal.blank?
 
 
-    totales = Ventas::Pedido.select('productos.categoria_producto_id, pedido_detalles.cantidad as cantidad')
+    totales = Ventas::Pedido.select('productos.id, productos.nombre,
+                                    productos.categoria_producto_id, pedido_detalles.cantidad as cantidad')
                           .joins({:rel_pedido_detalle => :rel_producto},{:rel_cliente => :rel_agrupador_cliente})
                           .where('pedidos.fecha = ?', @fecha)
                           .order('pedidos.created_at desc')
     totales = totales.where('clientes.agrupador_cliente_id =?', @agrupador) unless @agrupador.blank?
 
+    totales.each do |p|
+      @nombres_platos.push({id: p.id, nombre: p.nombre})
+    end
 
+    totales = totales.where('productos.id =?', @plato_principal) unless @plato_principal.blank?
 
     totales.each do |p|
       @cantidad_plato_principal = @cantidad_plato_principal + p.cantidad if p.categoria_producto_id == 1
       @cantidad_extras = @cantidad_extras + p.cantidad if p.categoria_producto_id == 2
     end
 
+    @nombres_platos.sort_by!{ |id, nombre| nombre }
+    @nombres_platos.uniq!
     @agrupador_cliente = Ventas::AgrupadorCliente.activos
   end
 
@@ -94,7 +109,7 @@ class Ventas::PedidosController < PrivateController
     if location == 0
       redirect_to @ventas_pedido, notice: 'Detalle guardado exitosamente!'
     else
-      redirect_to new_ventas_pedido_url, notice: 'Detalle guardado exitosamente!' 
+      redirect_to new_ventas_pedido_url, notice: 'Detalle guardado exitosamente!'
     end
   end
 
@@ -140,7 +155,7 @@ class Ventas::PedidosController < PrivateController
       message = e.mesage
     ensure
       render json: { result: result, message: message, etiqueta: pedido.etiqueta }
-    end   
+    end
   end
 
   def credito_contado
@@ -180,7 +195,7 @@ class Ventas::PedidosController < PrivateController
       message = e.mesage
     ensure
       render json: { result: result, message: message, contado: !pedido.rel_cuenta_detalle.present?}
-    end    
+    end
   end
 
   private

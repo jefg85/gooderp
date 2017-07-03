@@ -10,7 +10,7 @@ class Ventas::PedidosController < PrivateController
     @plato_principal = params[:plato_principal]
     @cantidad_plato_principal = 0
     @cantidad_extras = 0
-    @nombres_platos = [{}]
+    @nombres_platos = []
 
     @ventas_pedidos = Ventas::Pedido.select('pedidos.id, clientes.email, clientes.primer_apellido,
                                              clientes.segundo_apellido, clientes.primer_nombre,
@@ -46,7 +46,6 @@ class Ventas::PedidosController < PrivateController
       @cantidad_extras = @cantidad_extras + p.cantidad if p.categoria_producto_id == 2
     end
 
-    @nombres_platos.sort_by!{ |id, nombre| nombre }
     @nombres_platos.uniq!
     @agrupador_cliente = Ventas::AgrupadorCliente.activos
   end
